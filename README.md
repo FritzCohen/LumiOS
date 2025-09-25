@@ -8,6 +8,7 @@
 **Lumi OS** is a modern **React + TypeScript** operating system built for the browser.  
 It offers a dynamic desktop experience with offline functionality, themes, plugins, games, and more!
 
+[Click here to access LumiOS](https://fritzcohen.github.io/LumiOS/LumiOS.v12.5.html)
 </div>
 
 ---
