@@ -1,5 +1,5 @@
 <!-- redirect to test.html -->
-<meta http-equiv="refresh" content="0; url=test.html">
+<meta http-equiv="refresh" content="0; url=LumiOS.v12.5.html">
 
 <div align="center">
 	
