@@ -1,3 +1,6 @@
+<!-- redirect to test.html -->
+<meta http-equiv="refresh" content="0; url=test.html">
+
 <div align="center">
 	
 ## WORKING ON AN UPDATE.
