@@ -1,11 +1,4 @@
-<!-- redirect to test.html -->
-<meta http-equiv="refresh" content="0; url=LumiOS.v12.5.html">
-
 <div align="center">
-	
-## WORKING ON AN UPDATE.
-
-Will release sometime in october or november
 
 # Lumi OS
 
@@ -31,7 +24,7 @@ It offers a dynamic desktop experience with offline functionality, themes, plugi
 
 ## Downloading
 
-Lumi OS can be run locally, so click on this [link](https://raw.githubusercontent.com/LuminesenceProject/LumiOS/main/LumiOS.v12.5.html) in order to download the file. It can also be downloaded as an about:blank page.
+Lumi OS can be run locally, so click on this [link](https://raw.githubusercontent.com/LuminesenceProject/LumiOS/main/old/LumiOS.v12.5.html) in order to download the file. It can also be downloaded as an about:blank page.
 - Can I run Lumi OS off of my chromebook?
 	> Yes, Lumi OS can be run from local files.
 - How do I know when to update my file?
@@ -88,9 +81,9 @@ You can also chat with us and submit bugs on our [Discord server](https://discor
 
 - [x] Release source code
 - [ ] Release v12+ source code
-- [ ] Add more games
+- [x] Add more games
 - [x] Fix update bugs
-- [ ] Create more websites
+- [x] Create more websites
 - [ ] Add more TODOs
 
 ## Terms of Use
