@@ -13,6 +13,21 @@ It offers a dynamic desktop experience with offline functionality, themes, plugi
 
 ---
 
+## Table of Contents
+
+- [Features](#-features)
+- [Downloading](#downloading)
+- [Bookmarklet](#bookmarklet)
+- [Getting Started](#-getting-started)
+- [Contributing](#-contributing)
+- [Issues & Support](#issues--support)
+- [Common Issues & Fixes](#-common-issues--fixes)
+- [Todo](#todo)
+- [Terms of Use](#terms-of-use)
+- [Modification and Redistribution](#modification-and-redistribution)
+
+---
+
 ## 🧰 Features
 
 - 🎨 **Themes**, **plugins**, and much more  
@@ -39,6 +54,36 @@ Paste the following code into your bookmark bar and click it to run Lumi OS on a
 ```
 javascript:(function(){(async () => {/** BUILT FOR LUMI OS NOVEMBER 17th 2024*/const fetchLink = "https://raw.githubusercontent.com/LuminesenceProject/LumiOS/refs/heads/main/Info.json";try {const response = await fetch(fetchLink);if (!response.ok) throw new Error('Failed to fetch Info.json');const fetched = await response.json();const version = fetched[0]?.version;if (!version) throw new Error('Version not found in Info.json');const downloadLink = https://raw.githubusercontent.com/LuminesenceProject/LumiOS/main/LumiOS.v${version}.html;const fileResponse = await fetch(downloadLink);if (!fileResponse.ok) throw new Error('Failed to fetch the versioned file');const content = await fileResponse.text();const popupWindow = window.open('', '_blank', 'width=800,height=600');if (!popupWindow) throw new Error("Popup window couldn't be opened. Please check your browser settings.");popupWindow.document.open();popupWindow.document.write(content);popupWindow.document.close();} catch (error) {console.error('Error:', error.message);}})();})()
 ```
+---
+
+## 🚀 Getting Started
+
+LumiOS is built using **React + TypeScript**.  
+Follow these steps to run the project locally:
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/LuminesenceProject/LumiOS.git
+cd LumiOS
+```
+
+### 2. Install dependencies
+```bash
+npm install
+```
+
+### 3. Run the development server
+```bash
+npm run dev
+```
+
+### 4. Build for production
+```bash
+npm run build
+```
+
+### 5. Open in the browser
+
 ---
 
 ## 🤝 Contributing
@@ -81,10 +126,10 @@ You can also chat with us and submit bugs on our [Discord server](https://discor
 ## Todo
 
 - [x] Release source code
-- [ ] Release v12+ source code
-- [x] Add more games
-- [x] Fix update bugs
-- [x] Create more websites
+- [ ] Fix bug relating to topbar and settings
+- [ ] Fix bug with updating
+- [x] Allow for direct API access
+- [ ] Create extensions for third party developers
 - [ ] Add more TODOs
 
 ## Terms of Use
