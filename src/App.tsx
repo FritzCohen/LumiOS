@@ -1,145 +1,86 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Desktop from "./system/Desktop";
-import Theme from "./utils/Theme";
-import virtualFS from "./utils/VirtualFS";
-import Loading from "./components/Loading/Loading";
-import { useUser } from "./Providers/UserProvider";
-import FirstStart from "./components/FirstStart/FirstStart";
-import Login from "./components/Login/Login";
-import BootScreen from "./components/Bootscreen/BootScreen";
+import { useUser } from "./context/user/user";
+import useApplyTheme from "./hooks/useApplyTheme";
+import API from "./system/api/API";
+import Login from "./system/gui/components/Login/Login";
+import AutoSave from "./system/api/AutoSave";
+import Loading from "./system/gui/components/Login/Loading";
+import SetupWizard from "./system/gui/components/FirstStart/SetupWizard";
+import UpdateChecker from "./system/api/UpdateChecker";
 
-/**
- * App Comopnent
- * 
- * Holds and manages login, desktop, etc...
- */
 function App() {
-  const [loaded, setLoaded] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [firstStart, setFirstStart] = useState<boolean>(false);
-  const [bootscreen, setBootscreen] = useState<boolean>(false);
-  const [fadeOut, setFadeOut] = useState(false);
-  const { users, currentUser, loggedIn, setLoggedIn, setCurrentUser } = useUser();
+	const { loggedIn, currentUser, users, login } = useUser();
+	const { setFullTheme, setBackgroundImage, setPanic } = useApplyTheme(currentUser);
 
-  const setStyles = async () => {
-  if (!currentUser) return;    
+	/**
+	 * Getting default theme stuff
+	*/
+	useEffect(() => {
+		const loadExecutable = async () => {
+			if (!currentUser && !loggedIn) {
+				setFullTheme({
+					topbar: [],
+					taskbar: [],
+					window: {
+						primary: "grey",
+						primaryLight: "grey",
+						secondary: "grey",
+						secondaryLight: "grey",
+						textBase: "white",
+					}
+				});
 
-    await Theme.setTheme(currentUser.theme, false, currentUser);
-    await Theme.setBackground(currentUser.backgroundImage, false, currentUser);
-  };
+				return;
+			};
+			if (currentUser == null) return;
+			setFullTheme(currentUser.theme);
+			setBackgroundImage(currentUser.backgroundImage);
+			setPanic(currentUser.panic);
+		};
 
-  useEffect(() => {
-    // if (loaded) return;
-    
-    // Autologin stuffs
-    const autoUser = users.find((user) => user.autoLogin);
-    
-    if (autoUser) {
-      setTimeout(() => {
-        setCurrentUser(autoUser);
-        setStyles();
-        setLoggedIn(true);
-      }, 300)
-      
-      Theme.setPanic(autoUser.panic);
-    }
-  }, [loading, users]);
+		loadExecutable();
+	}, [currentUser, setBackgroundImage, setFullTheme, setPanic, loggedIn]);
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (currentUser && currentUser.panic && event.key === currentUser.panic.key) {
-        window.location.href = currentUser.panic.website;
-      }
-    };
+	// Autologin logic
+	useEffect(() => {
+		if (loggedIn) return;
 
-    window.addEventListener('keydown', handleKeyDown);
+		const autoLoginuser = users.find(user => user.autoLogin);
 
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [currentUser?.panic]);
+		if (autoLoginuser) {
+			login(autoLoginuser.username, autoLoginuser.password);
+		}
+	}, [loggedIn, users, login]);
 
-  useEffect(() => {
-    if (!loading) {
-      setFadeOut(true);
-    }
-  }, [loading]);
+	// Clicking the key to go to a different website logic
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+		if (currentUser && currentUser.panic && event.key === currentUser.panic.key) {
+			window.location.href = currentUser.panic.website;
+		}
+		};
 
-  const handleAnimationEnd = () => {
-    if (fadeOut) {
-      setFadeOut(false); // Ensure animation finishes before hiding completely
-    }
-  };
+		window.addEventListener('keydown', handleKeyDown);
 
-  useEffect(() => {
-    if (loaded) return;  
+		return () => {
+		window.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [currentUser]);
 
-    const applyBg = async () => {
-      await virtualFS.initialize();
-      try {
-        if (loaded) return;
-        if (!currentUser) return;
-
-        await virtualFS.initialize();
-        /*
-        // Old version for using the Theme and BGimage files not user preference
-        const fetchedTheme = await virtualFS.readfile("System/", "Theme");
-        const fetchedBG = await virtualFS.readfile("System/", "BackgroundImage");
-        
-        if (fetchedTheme.content) {          
-          await Theme.setTheme(await fetchedTheme.content, false);
-        }
-        if (fetchedBG.content) {
-          await Theme.setBackground(await fetchedBG.content, false);
-        }
-
-        console.log(fetchedTheme, fetchedBG);
-        */
-
-        // Set the styles
-        setStyles();
-
-        setLoaded(true);
-      } catch (error) {
-        console.error("Error applying background or theme:", error);
-      }
-    };
-
-    applyBg();
-  }, [loaded, currentUser]);
-
-  return (
-    <div className="w-full h-full relative">
-      {/* Keep the loading screen div rendered but remove it after fade out */}
-      <div 
-        className={`loading-screen ${fadeOut ? "fade-out" : ""}`} 
-        onAnimationEnd={handleAnimationEnd}
-      >
-        {!fadeOut && <Loading setLoading={setLoading} />}
-      </div>
-      {loading && (
-        <div className="group group-hover:scale-100 absolute bottom-0 right-0" style={{ color: "white", zIndex: 1000 }}>
-          <button className="scale-0 group-hover:scale-100" onClick={() => setBootscreen(true)}>Bootscreen</button>
-        </div>
-      )}
-      {/* Render other components once loading is complete */}
-      {!loading && (
-        <>
-          {firstStart ? (
-            <FirstStart setFirstStart={setFirstStart} />
-          ) : loggedIn ? (
-            bootscreen ? (
-              <BootScreen setShowBootScreen={setBootscreen} />
-            ) : (
-              <Desktop setShowBootScreen={setBootscreen} />
-            )
-          ) : (
-            <Login />
-          )}
-        </>
-      )}
-    </div>
-  );
+	return (
+		<>
+			{users.length == 0 ? <SetupWizard /> : loggedIn ? 
+				<Desktop /> 
+				: 
+				<Login />
+			}
+			<Loading />
+			<API />
+			<AutoSave />
+			<UpdateChecker />
+		</>
+	);
 }
 
 export default App;

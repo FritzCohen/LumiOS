@@ -1,0 +1,65 @@
+.desktop-item-grid {
+  display: flex;
+  flex-direction: column;    /* stack items vertically */
+  flex-wrap: wrap;           /* wrap items to new columns */
+  align-content: flex-start; /* start stacking at top */
+  gap: 4px;                  /* space between items */
+  padding: 1rem;
+  width: 100%;
+  height: 100%;
+}
+.desktop-item {
+  margin: 4px;
+  height: 84px;
+  width: 74px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8em;
+  transition: all 200ms ease-in-out;
+  animation: 200ms popintro;
+  justify-content: center;
+  border: 1px solid transparent;
+  cursor: pointer;
+  position: relative;
+  @apply text-text-base
+}
+
+.desktop-item.selected {
+  background-color: rgba(0, 120, 215, 0.4) !important;
+  border: 1px solid rgba(0, 120, 215, 0.9);
+  border-radius: 6px;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+.desktop-item:focus {
+  background: rgba(255, 255, 255, 0.24);
+  border: 1px dotted white;
+}
+
+.desktop-item:hover {
+  background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
+  @apply bg-opacity-50 rounded-sm; /* Add some transparency */
+}
+
+.desktop-item .appName {
+  text-align: center;
+  color: #fafafa;
+  margin-top: 4px;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+}
+
+.desktop-item:active {
+  border: 1px dotted gray;
+}
+
+.svg-wrapper {
+  height: 45%;
+  padding: 2px;
+  @apply aspect-square pointer-events-none
+}
+
+.svg-wrapper > svg {
+  color: white;
+  @apply invert;
+}

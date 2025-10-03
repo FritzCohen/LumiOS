@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import desktopImg from "../../../assets/Icons/thispc.png";
 import people from "../../../assets/Icons/people.png";
 import security from "../../../assets/Icons/security.png";
@@ -11,20 +11,17 @@ import System from "./System";
 import Themes from "./Themes";
 import Apps from "./Apps";
 import Accounts from "./Accounts";
-import { useUser } from "../../../Providers/UserProvider";
 import Security from "./Security";
-import { useKernal } from "../../../Providers/KernalProvider";
 import Input from "../../lib/Input";
+import { useUser } from "../../../context/user/user";
+import { OpenedApp } from "../../../context/kernal/kernal";
 
-const Settings = () => {
-    const { optionalProperties, resetOptionalProperties } = useKernal();
+const Settings: React.FC<{
+    props: OpenedApp
+}> = ({ props }) => {
     const [input, setInput] = useState("");
-    const [menu, setMenu] = useState<number>(optionalProperties.menu); // Tracks the active menu
+    const [menu, setMenu] = useState<number>(props.executable?.config?.defaultPath || 0); // Tracks the active menu
     const { currentUser } = useUser();
-
-    useEffect(() => {
-        resetOptionalProperties();
-    }, []);
 
     const getMenu = (): ReactNode => {
         switch (menu) {
@@ -51,7 +48,7 @@ const Settings = () => {
             {/* Sidebar */}
             <div className="sidebar">
                 {currentUser && <div className="flex justify-between items-center h-fit max-h-16 m-1 rounded hover:bg-primary-light hover:shadow transition-colors duration-200 px-2 p-1">
-                    <img alt="UserProfile" src={typeof currentUser?.svg === "string" ? currentUser.svg : ""} className="w-12 h-12" />
+                    <img alt="UserProfile" src={typeof currentUser?.icon === "string" ? currentUser.icon : ""} className="w-12 h-12" />
                     <div className="flex flex-col">
                         <h3 className="font-semibold text-lg">{ currentUser?.username }</h3>
                         <p className="text-sm font-light">Local Account</p>
@@ -85,7 +82,7 @@ const Settings = () => {
                                 )
                             ) : (
                                 // If it's not a string, assume it's a FontAwesome icon object
-                                <FontAwesomeIcon icon={item.icon} />
+                                <FontAwesomeIcon icon={item.icon as any} />
                             )
                         }
                         {item.label}

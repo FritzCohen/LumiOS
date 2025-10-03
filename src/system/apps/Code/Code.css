@@ -1,6 +1,6 @@
 .code-sidebar {
-    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
-    @apply bg-opacity-50; /* Add some transparency */
+    background: rgba(255, 255, 255, 0.2); 
+    @apply bg-opacity-50;
 }
 
 .popup-item {
@@ -8,11 +8,41 @@
 }
 
 .popup-item:hover {
-    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
-    @apply bg-opacity-50; /* Add some transparency */
+    background: rgba(255, 255, 255, 0.2); 
+    @apply bg-opacity-50;
 }
 
 .popup-item.active {
-    background: rgba(255, 255, 255, 0.3); /* Increase brightness on hover */
-    @apply bg-opacity-50; /* Add some transparency */
+    background: rgba(255, 255, 255, 0.3); 
+    @apply bg-opacity-50;
+}
+
+.code-topbar {
+    background: rgba(255, 255, 255, 0.2);
+    @apply flex flex-row items-center;
+}
+
+.code-item {
+    @apply flex items-center gap-2 w-full h-fit px-2 py-1 rounded transition-all duration-200 cursor-pointer; /* Rounded corners for items and smooth transition */
+    
+}
+
+.code-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    @apply bg-opacity-50;
+}
+
+/* Active state for sidebar items */
+.code-item.active {
+    background: rgba(255, 255, 255, 0.3);
+    @apply bg-opacity-50;
+}
+
+.code-topbar-item {
+    @apply flex items-center px-2 py-1 rounded cursor-pointer w-fit;
+
+}
+
+.code-topbar-item.active {
+    @apply rounded-t rounded-b-none;
 }

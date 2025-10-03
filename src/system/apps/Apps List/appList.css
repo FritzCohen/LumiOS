@@ -1,0 +1,8 @@
+.installed-app-item {
+    @apply flex flex-row items-center justify-between gap-1 cursor-pointer py-1 px-2 rounded;
+}
+
+.installed-app-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    @apply bg-opacity-50;
+}

@@ -1,8 +1,43 @@
-.taskmanager {
-    @apply w-full h-full flex flex-col gap-2 p-5
+.task-div {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 3fr 1fr; /* tweak ratios */
+  gap: 0.5rem;
+  align-items: start;
+  @apply rounded py-1 px-2 transition-all duration-100 ease-in cursor-pointer;
 }
 
-.taskmanager > .task-item {
-    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
-    @apply bg-opacity-50 flex justify-between items-center cursor-pointer p-2; /* Add some transparency */
+.task-div span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  user-select: none; /* prevents text selection */
+}
+
+.task-div span.description {
+  white-space: normal;   /* allow wrapping */
+  overflow: visible;     /* don’t hide overflow */
+  text-overflow: unset;  /* no ellipsis */
+}
+
+.task-div.header {
+  font-weight: bold;
+}
+
+.task-div:hover {
+    background: rgba(255, 255, 255, 0.2);
+    @apply bg-opacity-50 shadow-sm;
+}
+
+.task-div.active {
+    background: rgba(255, 255, 255, 0.3);
+    @apply bg-opacity-50 shadow;
+}
+
+/* Bold header row */
+.task-div.header {
+    font-weight: 600;
+}
+
+.task-footer {
+    @apply flex flex-row justify-center items-center gap-2 py-1 px-2 select-none;
 }

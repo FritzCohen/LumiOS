@@ -1,33 +1,28 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { TopbarProvider } from "./Providers/TopbarProvider.tsx";
-import { KernalProvider } from "./Providers/KernalProvider.tsx";
-import { UserProvider } from "./Providers/UserProvider.tsx";
-import { ScriptProvider } from "./Providers/ScriptProvider.tsx";
-import App from './App.tsx'
 import './index.css'
-import { ApplicationProvider } from './Providers/ApplicationProvider.tsx';
-
-/*
-This is based off of linux rings
-
-Kernal is highest level. Don't mess with it.
-Users are next, and are able to download unique apps for themselves
-Anything else gets shoved in there.
-*/
+import App from './App.tsx'
+import { KernelProvider } from './context/kernal/kernal.tsx'
+import { UserProvider } from './context/user/user.tsx'
+import WindowProvider from './context/window/WindowProvider.tsx'
+import ErrorBoundary from './system/gui/components/ErrorBoundary/ErrorBoundary.tsx'
+import { ScriptProvider } from './context/scripts/ScriptProvider.tsx'
+import { TopbarProvider } from './context/topbar/topbar.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <KernalProvider>
-      <UserProvider>
-        <ApplicationProvider>
+    <ErrorBoundary>
+      <KernelProvider>
+        <UserProvider>
           <ScriptProvider>
-            <TopbarProvider>
-              <App />
-            </TopbarProvider>
+            <WindowProvider>
+              <TopbarProvider>
+                <App />
+              </TopbarProvider>
+            </WindowProvider>
           </ScriptProvider>
-        </ApplicationProvider>
-      </UserProvider>
-    </KernalProvider>
+        </UserProvider>
+      </KernelProvider>
+    </ErrorBoundary>
   </StrictMode>,
 )

@@ -7,13 +7,13 @@
 }
 
 .control-panel-grid > div:hover {
-    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
-    @apply bg-opacity-50; /* Add some transparency */
+    background: rgba(255, 255, 255, 0.2);
+    @apply bg-opacity-50;
 }
 
 .control-panel-grid > div.active {
-    background: rgba(255, 255, 255, 0.3); /* Increase brightness on hover */
-    @apply bg-opacity-50; /* Add some transparency */
+    background: rgba(255, 255, 255, 0.3);
+    @apply bg-opacity-50;
 }
 
 .config-icon {
@@ -26,6 +26,6 @@
 }
 
 .script-column > div {
-    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
-    @apply bg-opacity-50 flex justify-between items-center cursor-pointer w-full h-full p-2; /* Add some transparency */
+    background: rgba(255, 255, 255, 0.2);
+    @apply bg-opacity-50 flex justify-between items-center cursor-pointer w-full h-full p-2;
 }

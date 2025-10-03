@@ -1,3 +1,69 @@
+/* Main container constraints */
+.appstore {
+  width: 100vw;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Game list container */
+.container-game {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 1rem;
+  width: 100%;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+/* Card sizing */
+.card {
+  height: 250px;
+  width: 100%;
+  min-width: 200px;
+  max-width: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.125rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+/* Splide adjustments */
+.splide {
+  width: 100%;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.splide__track {
+  overflow: visible;
+}
+
+.splide__slide {
+  width: 250px;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .splide__slide {
+    width: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    min-width: 180px;
+  }
+}
+
+
 .appstore-item {
     @apply w-full flex items-center hover:shadow transition-all duration-200 rounded px-4 py-2 cursor-pointer relative
 }
@@ -11,14 +77,14 @@
 }
 
 .appstore-item:hover {
-    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
-    @apply bg-opacity-50; /* Add some transparency */
+    background: rgba(255, 255, 255, 0.2);
+    @apply bg-opacity-50;
 }
 
 /* Active state for appstore items */
 .appstore-item.active {
-    background: rgba(255, 255, 255, 0.3); /* Increase brightness on hover */
-    @apply bg-opacity-50; /* Add some transparency */
+    background: rgba(255, 255, 255, 0.3);
+    @apply bg-opacity-50;
 }
 
 .appstore-item.active::before {
@@ -29,56 +95,93 @@
     @apply absolute left-0 h-1/2 w-1 bg-secondary-light rounded; /* Blue line for active state */
 }
 
-.flex-game {
-  @apply flex flex-row gap-4 overflow-x-auto p-5;
+/* CARD SHIT */
+/* Wrappers */
+.game-list-wrapper {
+  @apply overflow-x-auto whitespace-nowrap;
 }
 
-.flex-game::-webkit-scrollbar {
-  display: none;
+.game-list-bar {
+  @apply  p-2;
 }
 
-/* Container */
-.container-game {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-gap: 1rem;
-  max-width: 100%;
-  padding: 5px;
-  overflow: hidden;
-  overflow-x: hidden;
+.game-list-title {
+  @apply font-bold text-xl my-2 px-4;
+}
+
+.game-list-flex {
+  @apply overflow-x-auto whitespace-nowrap overflow-hidden px-4;
+}
+
+.game-list-grid {
+  @apply grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 max-w-full p-1 overflow-y-hidden;
 }
 
 /* Card */
 .card {
-  color: white;
-  @apply h-[225px] w-full p-2 overflow-hidden relative rounded-sm shadow transition duration-300 hover:shadow-2xl hover:scale-105 hover:visible hover:backdrop-blur;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  @apply h-[250px] w-full md:w-[200px] p-2 overflow-hidden relative rounded-sm shadow transition duration-300 z-10 hover:shadow-2xl hover:scale-105 cursor-pointer;
 }
 
-/* Card Image */
-.card img {
-  @apply absolute top-0 left-0 w-full h-full object-cover transition duration-300 hover:-translate-y-10;
+.img__img {
+  @apply absolute top-0 left-0 w-full h-[105%] object-cover transition duration-300 hover:-translate-y-10;
 }
 
-/* Card Description Layer */
 .img__description_layer {
-  @apply absolute inset-0 opacity-0 transition-opacity p-2 hover:opacity-100 hover:backdrop-blur hover:backdrop-brightness-75;
+  @apply absolute inset-0 p-2 opacity-0 transition-opacity hover:opacity-100 hover:backdrop-blur hover:backdrop-brightness-75 flex flex-col;
 }
 
-/* Card Description */
-.img__description {
-  @apply transition duration-200 translate-y-4;
+.card-tags {
+  @apply absolute grid grid-cols-3 gap-2 h-[30px] bottom-0 w-full text-[8px] font-bold;
 }
 
-/* Hover Effect for Description */
-.card:hover .img__description {
-  @apply translate-y-0;
+.card-tag {
+  @apply bg-primary p-1 rounded-lg flex items-center justify-center cursor-pointer truncate;
 }
 
-.button-container {
-  padding: 12px;
-  @apply grid grid-cols-2 gap-2 
+/* Tag buttons */
+.card-tags {
+  @apply absolute grid grid-cols-3 gap-1 h-[30px] bottom-0 text-[8px] font-bold m-2 left-0;
+}
+
+.card-tag {
+  @apply bg-primary p-1 rounded-lg flex items-center justify-center cursor-pointer;
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.button-item {
+  width: 90px;
+  height: 90px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  background-size: 200% 200%;
+  color: white;
+}
+
+.button-item svg {
+  width: 40px;
+  height: 40px;
+  fill: white;
+}
+
+.button-item.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.button-item svg {
+  width: 32px;
+  height: 32px;
+  fill: white;
+  flex-shrink: 0;
 }

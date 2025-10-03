@@ -1,21 +1,26 @@
 .browser-bar {
-    background: rgba(255, 255, 255, 0.3); /* Increase brightness on hover */
-    @apply flex gap-1 w-full mb-2 px-2 py-1 rounded-t-sm;
+    background: rgba(255, 255, 255, 0.3);
+    @apply flex items-center gap-2 px-2;
 }
 
+
+
 .tab {
-    @apply flex items-center justify-between space-x-2 px-4 pr-1 py-1 pb-1 rounded-t transition-colors duration-200 m-1
+  @apply flex items-center justify-between space-x-2 px-4 pr-1 py-1 rounded-t transition-colors duration-200 cursor-pointer;
+  margin-bottom: 2px;
 }
 
 .tab:hover {
-    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
-    @apply bg-opacity-50 rounded; /* Add some transparency */
+  background: rgba(255, 255, 255, 0.2);
+  @apply bg-opacity-50 rounded;
 }
 
-/* Active state for sidebar items */
 .tab.active {
-    background: rgba(255, 255, 255, 0.3); /* Increase brightness on hover */
-    @apply bg-opacity-50 rounded-b-none !m-0; /* Add some transparency */
+  background: rgba(255, 255, 255, 0.3);
+  @apply bg-opacity-50 pb-[6px];
+  margin-bottom: 0px;
+  position: relative;
+  z-index: 10;
 }
 
 #content {
@@ -27,7 +32,7 @@
 }
 
 .close-button:hover {
-    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .browser-item:hover {

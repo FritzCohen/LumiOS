@@ -1,29 +1,26 @@
 import { ReactNode, useState } from "react";
-import "./ControlPanel.css";
-import Scripts from "./Scripts";
-import InstallScript from "./InstallScript";
+import { motion, AnimatePresence } from "framer-motion";
+
 import manageIcon from "../../../assets/Icons/ControlPanel/manageScript.png";
 import downloadIcon from "../../../assets/Icons/ControlPanel/down-sm.png";
 import updatesIcon from "../../../assets/Icons/ControlPanel/updates.webp";
 import infoIcon from "../../../assets/Icons/ControlPanel/info.png";
 import configIcon from "../../../assets/Icons/Settings/configuration.ico";
 import appsIcon from "../../../assets/Icons/Apps.webp";
-import Updates from "./Updates";
-import Configuration from "./Configuration";
-import About from "./About";
-import Apps from "./Apps";
+import "./controlPanel.css";
+import Layout from "./Layout";
+import InstallScript from "./Pages/InstallScripts";
+import ManageScripts from "./Pages/ManageScripts";
 
-const ControlPanel: React.FC<{ setShowBootScreen: (prev: boolean) => void }> = ({ setShowBootScreen }) => {
+const ControlPanel = () => {
     const [menu, setMenu] = useState<number>(0);
+
+    const back = () => setMenu(0);
 
     const getMenu = (): ReactNode => {
         switch (menu) {
-            case 1: return <Scripts setMenu={setMenu} />
-            case 2: return <InstallScript setMenu={setMenu} />
-            case 3: return <Updates setMenu={setMenu} />
-            case 4: return <Configuration setMenu={setMenu} />
-            case 5: return <Apps setMenu={setMenu} />
-            case 6: return <About setMenu={setMenu} setShowBootScreen={setShowBootScreen} />
+            case 1: return <Layout name="Manage Scripts" back={back}><ManageScripts /></Layout>
+            case 2: return <Layout name="Install Scripts" back={back}><InstallScript /></Layout>
 
             default: return (
                 <div className="flex flex-col items-center justify-center w-full h-full">
@@ -41,7 +38,20 @@ const ControlPanel: React.FC<{ setShowBootScreen: (prev: boolean) => void }> = (
         }
     };
 
-    return getMenu();
+    return (
+        <AnimatePresence mode="wait">
+            <motion.div
+                key={menu}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.10, ease: "easeInOut" }}
+                className="w-full h-full overflow-auto"
+            >
+                {getMenu()}
+            </motion.div>
+        </AnimatePresence>
+    )
 }
  
 export default ControlPanel;

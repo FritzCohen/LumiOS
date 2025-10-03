@@ -2,24 +2,27 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
-import virtualFS from "../../../utils/VirtualFS";
-import { Directory, File, Permission } from "../../../utils/types";
-import { useKernal } from "../../../Providers/KernalProvider";
+import { useKernel } from "../../../hooks/useKernal";
+import { Directory, File } from "../../api/types";
+import { Permission } from "../../../types/globals";
+import virtualFS from "../../api/virtualFS";
+import { useUser } from "../../../context/user/user";
+import fileTypes, { FileType } from "../../api/FileTypes";
 
 interface ConsoleProps {
     setCurrentMenu: (prev: number) => void;
 }
 
 const Console: React.FC<ConsoleProps> = ({ setCurrentMenu }) => {
-    const { optionalProperties, resetOptionalProperties } = useKernal();
-    const [currentDir, setCurrentDir] = useState<string>(optionalProperties.path);
+    const { closeApp } = useKernel();
+    const { userDirectory } = useUser();
+    const [currentDir, setCurrentDir] = useState<string>(userDirectory);
     const [content, setContent] = useState<Record<string, File | Directory>>({});
     const [input, setInput] = useState<string>("");
     const [stack, setStack] = useState<Array<{ command: string; success: boolean; color: string }>>([{ command: "Type 'js' to switch to javascript.", success: true, color: "gray" }]);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
     const [admin] = useState<Permission>(Permission.USER);
-    const { removeOpenedApp } = useKernal();
 
     useEffect(() => {
         const fetchItems = async () => {
@@ -39,10 +42,6 @@ const Console: React.FC<ConsoleProps> = ({ setCurrentMenu }) => {
     useEffect(() => {
         scrollToBottom();
     }, [stack]);
-
-    useEffect(() => {
-        resetOptionalProperties();
-    }, []);
 
     const scrollToBottom = () => {
         if (messagesEndRef.current) {
@@ -163,7 +162,7 @@ const Console: React.FC<ConsoleProps> = ({ setCurrentMenu }) => {
                 const app = command.substring(command.indexOf(" ") + 1);
                 // || !openedApps.some(process => process.name === app) does not work idk why
                 if (app !== "exit") {
-                    removeOpenedApp(app);
+                    closeApp(app);
                     setStack([...stack, { command: `Successfully quit ${app}.`, success: true, color: "lightblue" }]);
                 } else {
                     setStack([...stack, { command: "Exiting...", success: false, color: "red" }]);
@@ -258,10 +257,12 @@ const Console: React.FC<ConsoleProps> = ({ setCurrentMenu }) => {
 
                 const content: string = command.substring(command.indexOf(" ") + 1).split(" ")[1];        
                         
-                console.log(content, fileName);
-                
+                if (!(fileType in fileTypes)) {
+                    setStack([...stack, { command: `File is of inccorect type ${fileType}`, success: true, color: "red" }]);
+                    return;
+                }
 
-                await virtualFS.writeFile(currentDir, fileName, content, fileType);
+                await virtualFS.writeFile(currentDir, fileName, content, fileType as FileType);
                 setStack([...stack, { command: `${fileName.charAt(0).toUpperCase() + fileName.slice(1)} successfully created. At ${currentDir}.`, success: true, color: "lightblue" }]);
             },
             js: () => {

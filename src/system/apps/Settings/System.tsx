@@ -1,32 +1,22 @@
 import { useEffect, useState } from "react";
-import logo from "../../../assets/no-bg-logo.png";
 import Button from "../../lib/Button";
-import virtualFS from "../../../utils/VirtualFS";
-import { useKernal } from "../../../Providers/KernalProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfinity } from "@fortawesome/free-solid-svg-icons";
-import { useUser } from "../../../Providers/UserProvider";
-
-interface versionInterface {
-    name: string;
-    image: string;
-    version: string;
-    secure: boolean;
-}
+import { useKernel } from "../../../hooks/useKernal";
+import { useUser } from "../../../context/user/user";
+import virtualFS from "../../api/virtualFS";
+import TextPopup from "../../gui/components/Popups/TextPopup";
+import { useWindow } from "../../../context/window/WindowProvider";
+import logo from "../../../assets/no-bg-logo.png";
 
 const System = () => {
-    const { systemProps, addPopup } = useKernal();
+    const { openApp } = useKernel();
     const { currentUser } = useUser();
-
-    const [version, setVersion] = useState<versionInterface>({
-        name: "Lumi OS",
-        image: logo || "https://avatars.githubusercontent.com/u/101959214?v=4",
-        version: systemProps.version.toString(),
-        secure: false,
-    });
+    const { systemProps } = useWindow();
 
     const [indexedDBUsage, setIndexedDBUsage] = useState<string | null>(null);
     const [maxUsage, setMaxUsage] = useState<string | null>(null);
+    const [secure, setSecure] = useState<boolean>(false);
 
     useEffect(() => {        
         const fetchLink = async () => {
@@ -39,15 +29,9 @@ const System = () => {
 
                 const data = await response.json();
                 
-                const secured: boolean = (Number(data[0].version) >= systemProps.version - 1) && (Number(data[0].version) <= systemProps.version + 1);                
+                const secured: boolean = (Number(data[0].version) >= 0 - 1) && (Number(data[0].version) <= 0 + 1);                
 
-                // Update the version state immutably
-                setVersion((prevVersion) => ({
-                    ...prevVersion,
-                    ...data[0],
-                    secure: secured,
-                    version: systemProps.version.toString()
-                }));
+                setSecure(secured);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -115,7 +99,7 @@ const System = () => {
         };
           
         getUsage();
-    }, [version.version]);
+    }, [systemProps.system.version]);
 
     const browserName = () => {
         const userAgent = navigator.userAgent;
@@ -158,7 +142,6 @@ const System = () => {
     };    
 
     const updateFile = async () => {
-        await virtualFS.updateOS();
     };
 
     const updateFileSystem = async () => {
@@ -166,12 +149,15 @@ const System = () => {
         await virtualFS.updateSpecificDirectory("System/", "System/", false);
         await virtualFS.updateSpecificDirectory("System/Plugins/", "System/Plugins/", false);
 
-        addPopup({
-            name: "Notification",
-            description: "Please reload the page to confirm the changes made.",
-            minimized: false,
-            onAccept: async () => { window.location.reload() }
-        });
+        await openApp({
+			config: {
+				name: "Update",
+				displayName: "Notification",
+				icon: "",
+				permissions: 0,
+			},
+			mainComponent: (props) => <TextPopup {...props} text="Please reload to initialize changes." onComplete={() => window.location.reload()} />,
+		});
     };
 
     const handleReset = async () => {
@@ -187,8 +173,8 @@ const System = () => {
             <h2 className="font-bold text-xl">System</h2>
             <div className="p-2 border rounded shadow">
                 <div className="flex flex-row justify-between items-center">
-                    <h4 className="font-bold text-md">LumiOS v{version.version}</h4>
-                    <img src={version.image} alt="logo" className="w-10 h-10" />
+                    <h4 className="font-bold text-md">LumiOS v{systemProps.system.version}</h4>
+                    <img src={logo} alt="logo" className="w-10 h-10" />
                 </div>
                 <div className="flex flex-row justify-between items-center my-2">
                     Update
@@ -222,16 +208,16 @@ const System = () => {
                         <strong>Storage Used:</strong> <div className="flex items-center justify-center">{indexedDBUsage !== null ? `${indexedDBUsage}/${maxUsage != null ? maxUsage : ''}` : "Loading..."} {maxUsage == null && <FontAwesomeIcon icon={faInfinity} />}</div>
                     </div>
                     <div className="flex flex-row justify-between items-center">
-                        <strong>Current Version:</strong> {version.version}
+                        <strong>Current Version:</strong> {systemProps.system.version}
                     </div>
                     <div className="flex flex-row justify-between items-center">
-                        <strong>Supported Version:</strong> {version.secure ? "Yes" : "No"}
+                        <strong>Supported Version:</strong> {secure ? "Yes" : "No"}
                     </div>
                 </div>
             </div>
             <div className="p-2 border rounded shadow flex flex-row justify-between items-center">
                 Update (beta)
-                <Button className="!bg-secondary hover:!bg-secondary-light" onClick={updateFile}>Update File</Button>
+                <Button onClick={updateFile}>Update File</Button>
             </div>
             <div className="p-2 border rounded shadow flex flex-row justify-between items-center">
                 Reset <Button onClick={handleReset} className="hover:bg-primary-light">Confirm</Button>

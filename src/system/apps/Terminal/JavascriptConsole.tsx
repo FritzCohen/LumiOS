@@ -2,11 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 
-interface JavascriptConsoleProps {
-  setCurrentMenu: (prev: number) => void;
-}
-
-const JavascriptConsole: React.FC<JavascriptConsoleProps> = ({ setCurrentMenu }) => {
+const JavascriptConsole: React.FC<{ setCurrentMenu: (prev: number) => void }> = ({ setCurrentMenu }) => {
   const [input, setInput] = useState<string>("");
   const [stack, setStack] = useState<Array<{ command: string; success: boolean; color: string }>>([
     { command: "Type 'js' to switch to Terminal.", success: true, color: "gray" },
@@ -41,7 +37,9 @@ const JavascriptConsole: React.FC<JavascriptConsoleProps> = ({ setCurrentMenu })
     setStack((prevStack) => [...prevStack, { command: command, success: true, color: "gray" }]);
 
     try {
-      const result = eval(command);      
+      command = command.replace(/\bAPI\b/g, "window.API");
+      
+      const result = eval(command);
       setStack((prevStack) => [...prevStack, { command: result as string || "undefined", success: true, color: "lightblue" }]);
     } catch (error: unknown | any) {
       console.error(error);

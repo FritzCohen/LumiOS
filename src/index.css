@@ -1,228 +1,61 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-    --taskbar: floating;
-    --taskbar-align: center;
+  --background-image: url("./assets/background/image4.jpg");
 }
 
-html, body {
-    overflow: hidden;
-}
-
-body {
-    margin: 0;
-    width: 100vw;
-    height: 100vh;
-    @apply !text-text-base
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  @apply !text-text-base
 }
 
 .desktop {
-    position: relative;
-    background: no-repeat;
-    background-image: var(--background-image, none);
-    background-size: cover;
-    @apply w-full h-full flex justify-center items-center;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 0;
+  background-image: var(--background-image, none);
+  background-size: cover;
+  background-position: center;
+  /* No need for .desktop-bg-blur anymore */
 }
 
-.desktop-blur {
-    position: relative;
-    background: no-repeat;
-    background-image: var(--background-image, none);
-    background-size: cover;
-    background-position: center;
-    width: 100vw;
-    height: 110vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden; /* Prevent overflow issues */
+.desktop-bg-blur {
+
 }
 
-.desktop-blur::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: inherit; /* Inherit the background image */
-    background-size: cover;
-    background-position: center;
-    z-index: 1;
-    filter: blur(10px); /* Adjust the blur intensity */
-    -webkit-filter: blur(10px); /* For Safari */
-    width: 100%;
-    height: 100%;
-}
+/*
+THIS IS SO INCREDIBLY LAGGY
 
-#root {
-    width: 100%;
-    height: 100%;
-}
+NEVER USE UNLESS FOR A CORE COMPONENT
+DON'T USE THIS IN ANY APPS
 
-#root > div {
-    width: 100%;
-    height: 100%;
-}
+I SPENT 3 HOURS TRYING TO FIND THE SOURCE OF WINDOW LAG AND ITS THIS:
 
+also go into desktop.tsx and add glass as a classname, ul see...
+*/
 .glass {
     -webkit-backdrop-filter: saturate(2) blur(3em) brightness(69%);
     backdrop-filter: saturate(2) blur(3em) brightness(69%);
 }
 
-@layer components {
-    .input-main {
-      @apply h-10 min-h-8 w-full bg-primary border-b-2 border-secondary text-text-base rounded-lg text-sm px-4 focus:ring-0;
-    }
-
-    .select-main {
-      @apply h-10 w-full bg-primary border-b-2 border-secondary text-text-base rounded-lg text-sm px-4 focus:ring-0;
-    }
-  }
-
-  @layer utilities {
-    .focus-glow {
-      @apply focus-visible:ring focus-visible:ring-secondary-light focus-visible:ring-opacity-50;
-    }
+.glass-heavy {
+  backdrop-filter: blur(3em) saturate(180%) brightness(50%);
+  -webkit-backdrop-filter: blur(3em) saturate(180%) brightness(50%);
+  background-color: rgba(0, 0, 0, 0.2);
+  isolation: isolate;
 }
 
-.ripple-button {
-    @apply relative cursor-pointer overflow-hidden px-2 py-1 text-text-base bg-primary hover:bg-secondary-light transition-all duration-200 active:scale-95 rounded
-}
-  
-.ripple-button > .ripple {
-    animation: 0.9s ease 1 forwards ripple-effect;
-    content: "";
-    @apply absolute block w-10 h-10 bg-secondary rounded-full opacity-100
-}
-  
-@keyframes ripple-effect {
-    0% {
-      transform: scale(1);
-      opacity: 1;
-    }
-    50% {
-      transform: scale(10);
-      opacity: 0.375;
-    }
-    100% {
-      transform: scale(35);
-      opacity: 0;
-    }
-}
-  
-.ripple-button > .content {
-    position: relative;
-    z-index: 2;
-}
-
-@keyframes fadeInUp {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-}
-
-.fade-in {
-  transform-origin: center;
-  animation: 1.5s fadeInUp;
-  transition: all 0.4s ease;
-}
-
-::-webkit-scrollbar{height:1rem;width:.5rem}::-webkit-scrollbar:horizontal{height:.5rem;width:1rem}::-webkit-scrollbar-track{background-color:transparent;border-radius:9999px}::-webkit-scrollbar-thumb{--tw-border-opacity:1;background-color:hsla(0,0%,89%,.8);border-color:rgba(255,255,255,var(--tw-border-opacity));border-radius:9999px;border-width:1px}::-webkit-scrollbar-thumb:hover{--bg-primary:1;background-color:rgba(227,227,227,var(--bg-primary))}.dark ::-webkit-scrollbar-thumb{background-color:hsla(0,0%,100%,.1)}.dark ::-webkit-scrollbar-thumb:hover{background-color:hsla(0,0%,100%,.3)}@media (min-width:768px){.scrollbar-trigger ::-webkit-scrollbar-thumb{visibility:hidden}.scrollbar-trigger:hover ::-webkit-scrollbar-thumb{visibility:visible}}
-
-.custom-file-upload {
-  border: 1px solid #ccc;
-  display: inline-block;
-  padding: 6px 12px;
-  cursor: pointer;
-}
-
-input[type="file"] {
-  display: none;
-}
-
-.desktop-apps {
-  @apply flex flex-col flex-wrap gap-4 p-4 w-full h-full mt-12 relative;
-}
-
-.desktop-frame {
-  @apply w-full h-full
-}
-
-.desktop-item {
-  margin: 4px;
-  height: 84px;
-  width: 74px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 0.8em;
-  transition: all 200ms ease-in-out;
-  animation: 200ms popintro;
-  justify-content: center;
-  border: 1px solid transparent;
-  cursor: pointer;
-  position: relative;
-}
-
-.desktop-item:focus {
-  background: rgba(255, 255, 255, 0.24);
-  border: 1px dotted white;
-}
-
-.desktop-item:hover {
-  background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
-  @apply bg-opacity-50 rounded-sm; /* Add some transparency */
-}
-
-.desktop-item .appName {
-  text-align: center;
-  color: #fafafa;
-  margin-top: 4px;
-  text-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
-}
-
-.desktop-item:active {
-  border: 1px dotted gray;
-}
-
-.svg-wrapper {
-  height: 45%;
-  padding: 2px;
-  @apply aspect-square pointer-events-none
-}
-
-.svg-wrapper > svg {
-  color: white;
-  @apply invert;
-}
-
-.desktop-item:active > img, .desktop-item:active > div, .desktop-item:active > svg {
-  @apply transition-transform duration-200 scale-75
-}
-
-textarea:focus {
-  outline: none;
-}
-
-@keyframes popintro {
-  0% {
-    transform: scale(0);
-  }
-  40% {
-    transform: scale(1.125);
-  }
-  70% {
-    transform: scale(0.725);
-  }
-  100% {
-    transform: scale(1);
-  }
+.glass-light {
+  backdrop-filter: blur(4em) saturate(200%) brightness(95%);
+  -webkit-backdrop-filter: blur(4em) saturate(200%) brightness(95%);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 select {
@@ -245,25 +78,142 @@ select:focus {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.window-content {
-  @apply bg-primary
+@layer components {
+    .input-main {
+      @apply h-10 min-h-8 w-full bg-primary border-b-2 border-secondary text-text-base rounded-lg text-sm px-4 focus:ring-0;
+    }
+
+    .select-main {
+      @apply h-10 w-full bg-primary border-b-2 border-secondary text-text-base rounded-lg text-sm px-4 focus:ring-0;
+    }
+  }
+
+  @layer utilities {
+    .focus-glow {
+      @apply focus-visible:ring focus-visible:ring-secondary-light focus-visible:ring-opacity-50;
+    }
 }
 
-.loading-screen {
-  position: absolute;
-  top: 0;
-  left: 0;
+/* Scrollbar */
+::-webkit-scrollbar{height:1rem;width:.5rem}::-webkit-scrollbar:horizontal{height:.5rem;width:1rem}::-webkit-scrollbar-track{background-color:transparent;border-radius:9999px}::-webkit-scrollbar-thumb{--tw-border-opacity:1;background-color:hsla(0,0%,89%,.8);border-color:rgba(255,255,255,var(--tw-border-opacity));border-radius:9999px;border-width:1px}::-webkit-scrollbar-thumb:hover{--bg-primary:1;background-color:rgba(227,227,227,var(--bg-primary))}.dark ::-webkit-scrollbar-thumb{background-color:hsla(0,0%,100%,.1)}.dark ::-webkit-scrollbar-thumb:hover{background-color:hsla(0,0%,100%,.3)}@media (min-width:768px){.scrollbar-trigger ::-webkit-scrollbar-thumb{visibility:hidden}.scrollbar-trigger:hover ::-webkit-scrollbar-thumb{visibility:visible}}
+
+.custom-file-upload {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 4px 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  display: inline-block;
+}
+
+.custom-file-upload:hover {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.custom-file-upload:focus-within {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+input[type="file"] {
+  display: none;
+}
+
+hr {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.15);
+  margin: 0.5rem 0;
+  transition: background-color 0.2s ease-in-out;
+}
+
+hr:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.clean-p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  font-weight: 300;
+  margin: 0.25rem 0;
+  line-height: 1.4;
+}
+
+textarea {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 1rem;
+  outline: none;
   width: 100%;
-  height: 100%;
-  background-color: #181818;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.5s ease-in-out;
-  z-index: 100;
+  min-height: 80px; /* adjustable */
+  resize: vertical; /* only allow vertical resize */
+  transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-.fade-out {
+/* Hover effect */
+textarea:hover {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Focus glow */
+textarea:focus {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Disabled look */
+textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  position: relative;
+  transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out, transform 0.1s ease-in-out;
+  vertical-align: middle;
+}
+
+input[type="checkbox"]:hover {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+input[type="checkbox"]:focus {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+input[type="checkbox"]:active {
+  transform: scale(0.95);
+}
+
+/* checkmark */
+input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: translate(-50%, -50%) rotate(45deg) scale(0);
   opacity: 0;
   pointer-events: none;
+  transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+}
+
+/* checked state: pop animation */
+input[type="checkbox"]:checked::after {
+  transform: translate(-50%, -50%) rotate(45deg) scale(1);
+  opacity: 1;
 }

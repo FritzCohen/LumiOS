@@ -1,112 +1,185 @@
-import { useEffect, useState } from "react";
-import { useKernal } from "../../../Providers/KernalProvider";
+import { useCallback, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpFromBracket, faArrowUpRightFromSquare, faChevronLeft, faChevronRight, faThumbTack, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { App } from "../../../utils/types";
 import Button from "../../lib/Button";
-import virtualFS from "../../../utils/VirtualFS";
-import { useApplications } from "../../../Providers/ApplicationProvider";
-import { useUser } from "../../../Providers/UserProvider";
+import { Executable } from "../../../types/globals";
+import useGetApps from "../../../hooks/useGetApps";
+import { Directory, File } from "../../api/types";
+import { useFolderWatcher } from "../../api/useFolderWatcher";
+import { useUser } from "../../../context/user/user";
+import { useKernel } from "../../../hooks/useKernal";
+import virtualFS from "../../api/virtualFS";
 
 const Apps = () => {
-    const [selectedApp, setSelectedApp] = useState<App | null>(null);
-    const [taskbarApps, setTaskbarApps] = useState<string[]>([]);
-    const { addOpenedApp } = useKernal();
-    const { addTaskbarApp, removeTaskbarApp, addDesktopApp, removeDesktopApp, desktopApps, deleteInstalledApp, installedApps: apps } = useApplications();
-    const { currentUser } = useUser();
+    const [selectedApp, setSelectedApp] = useState<Executable | null>(null);
+    const [taskbarItems, setTaskbarItems] = useState<
+        Record<string, File | Directory>
+    >({});
+    const [desktopItems, setDesktopItems] = useState<
+        Record<string, File | Directory>
+    >({});
+    const previousTaskbarItemsRef = useRef<Record<string, File | Directory>>({});
+    const previousDesktopItemsRef = useRef<Record<string, File | Directory>>({});
 
-    useEffect(() => {
-        const fetchApps = async () => {
-            setTaskbarApps(Object.keys(await virtualFS.readdir(`Users/${currentUser?.username}/Taskbar/`)));
-        };
+    const { openedApps, openApp, modifyProp, bringToFront } = useKernel();
+    const { userDirectory } = useUser();
 
-        fetchApps();
-    }, []);
+    const smartSetItems = useCallback(
+        (type: "desktop" | "taskbar", newItems: Record<string, File | Directory>) => {
+            const old = type === "desktop" ?  
+            previousDesktopItemsRef.current : previousTaskbarItemsRef.current;
 
+            const oldKeys = Object.keys(old).sort().join(",");
+            const newKeys = Object.keys(newItems).sort().join(",");
 
-    const openApp = () => {
+            if (oldKeys === newKeys) return; // Only check keys, for simplicity
+
+            if (type === "desktop") {
+            previousDesktopItemsRef.current = { ...newItems };
+            setDesktopItems(newItems);
+            } else {
+            previousTaskbarItemsRef.current = { ...newItems };
+            setTaskbarItems(newItems);
+            }
+        },
+        []
+    );
+
+    useFolderWatcher(`${userDirectory}/Taskbar/`, (items) => smartSetItems("taskbar", items));
+    useFolderWatcher(`${userDirectory}/Desktop/`, (items) => smartSetItems("desktop", items));
+
+    const apps = useGetApps();
+
+    const handleOpenApp = () => {
         if (!selectedApp) return;
 
-        addOpenedApp({
-            name: selectedApp.actualName,
-            svg: selectedApp.svg,
-            minimized: false,
-            maximized: false,
-            path: `Users/${currentUser?.username}/Apps/`,
-            type: "exe",
-        });
+        const app = openedApps.find(
+            (app) => app.executable.config.name === selectedApp.config.name
+        );
+
+        if (app) {
+            modifyProp(app.id, "minimized", !app.minimized);
+            bringToFront(app.id);
+        } else {
+            openApp(selectedApp);
+            const opened = openedApps.find(
+                (app) => app.executable.config.name === selectedApp.config.name
+            );
+
+            if (!opened) return;
+
+            bringToFront(opened.id);
+        }
+
     };
 
     const pin = async () => {
         if (!selectedApp) return;
 
-        if (taskbarApps.includes(selectedApp.actualName)) {
-            await removeTaskbarApp(selectedApp);
-        } else {
-            await addTaskbarApp(selectedApp);
-        }
-        const newTaskbarApps = Object.keys(await virtualFS.readdir(`Users/${currentUser?.username}/Taskbar/`));
+        const appCopy = { ...selectedApp, mainComponent: undefined };
 
-        // setSelectedApp(null);
-        setTaskbarApps(newTaskbarApps);
-    }
+        if (taskbarItems[selectedApp.config.name || selectedApp.config.displayName]) {
+            await virtualFS.deleteFile(`${userDirectory}/Taskbar/`, selectedApp.config.name);
+        } else {
+            await virtualFS.writeFile(
+                `${userDirectory}/Taskbar/`,
+                selectedApp.config.name,
+                appCopy,
+                "exe"
+            );
+        }
+
+        setSelectedApp(null);
+    };
 
     const shortcut = async () => {
-        if (!selectedApp) return;        
+        if (!selectedApp) return;
 
-        if (!desktopApps.some(value => value.actualName === selectedApp.actualName)) {
-            await addDesktopApp(selectedApp);
+        const appCopy = { ...selectedApp, mainComponent: undefined };
+
+        if (desktopItems[selectedApp.config.name || selectedApp.config.displayName]) {
+            await virtualFS.deleteFile(`${userDirectory}/Desktop/`, selectedApp.config.name);
         } else {
-            await removeDesktopApp(selectedApp);
+            await virtualFS.writeFile(
+                `${userDirectory}/Desktop/`,
+                selectedApp.config.name,
+                appCopy,
+                "exe"
+            );
         }
 
-        // setSelectedApp(null);
-    }
+        setSelectedApp(null);
+    };
 
-    const deleteApp = async (): Promise<void> => {    
-        if (selectedApp) {
-            await deleteInstalledApp(selectedApp.actualName || selectedApp.name)
-        }
-            
+    const deleteApp = async (): Promise<void> => {
         setSelectedApp(null);
     }
 
     return (
         <div className="flex flex-col gap-2 px-4 overflow-y-auto py-4">
             {/* Since its already flex-col, no need to repeat it */}
-            {selectedApp ? 
-            <>
-                <div className="w-full flex justify-between items-center px-5">
-                    <Button onClick={() => setSelectedApp(null)}>
-                        <FontAwesomeIcon icon={faChevronLeft} /> Back
-                    </Button>
-                    <div className="flex flex-row gap-2 items-center justify-center">
-                        {!selectedApp.svg ? undefined : typeof selectedApp.svg === "string" ? (
-                                // Check if the string starts with "<svg" or "<img"
-                                selectedApp.svg.trim().startsWith("<svg") || selectedApp.svg.trim().startsWith("<img") ? (
-                                <div
-                                    className="w-8 h-8 p-2 invert"
-                                    dangerouslySetInnerHTML={{ __html: selectedApp.svg }}
-                                />
-                                ) : (
-                                // Otherwise, treat it as a regular image URL
-                                <img src={selectedApp.svg} alt={selectedApp.name} className="w-8 h-8 p-1 pointer-events-none" />
-                                )
-                            ) : (
-                                // If it's not a string, assume it's a FontAwesome svg object
-                                <FontAwesomeIcon icon={selectedApp.svg} />
-                        )}
-                        <h1>{ selectedApp.name }</h1>
-                    </div>
-                </div>
-                <div className="flex-grow flex flex-col gap-2 my-5 h-full">
-                    <p className="text-sm">{ selectedApp?.description }</p>
-                    <Button onClick={openApp}><FontAwesomeIcon icon={faArrowUpFromBracket} className="pr-1" />Open</Button>
-                    <Button onClick={pin}><FontAwesomeIcon icon={faThumbTack} className="pr-1" />{taskbarApps.includes(selectedApp.actualName) ? "Unpin" : "Pin"}</Button>
-                    <Button onClick={shortcut}><FontAwesomeIcon icon={faArrowUpRightFromSquare} className="pr-1" />{desktopApps.some(value => value.actualName === selectedApp.actualName) ? "Unshortcut" : "Shortcut"}</Button>
-                    <Button onClick={deleteApp}><FontAwesomeIcon icon={faTrash} className="pr-1" />Delete {selectedApp.name}</Button>
-                </div>
-            </>
+{selectedApp ? (
+  <>
+    <div className="w-full flex justify-between items-center px-5">
+      <Button onClick={() => setSelectedApp(null)}>
+        <FontAwesomeIcon icon={faChevronLeft} /> Back
+      </Button>
+      <div className="flex flex-row gap-2 items-center justify-center">
+        {!selectedApp.config.icon
+          ? undefined
+          : typeof selectedApp.config.icon === "string"
+          ? selectedApp.config.icon.trim().startsWith("<svg") ||
+            selectedApp.config.icon.trim().startsWith("<img") ? (
+            <div
+              className="w-8 h-8 p-2 invert"
+              dangerouslySetInnerHTML={{ __html: selectedApp.config.icon }}
+            />
+          ) : (
+            <img
+              src={selectedApp.config.icon}
+              alt={selectedApp.config.name}
+              className="w-8 h-8 p-1 pointer-events-none"
+            />
+          )
+          : (
+            <FontAwesomeIcon icon={selectedApp.config.icon} />
+          )}
+        <h1>{selectedApp.config.name}</h1>
+      </div>
+    </div>
+
+    <div className="flex-grow flex flex-col gap-2 my-5 h-full">
+      <p className="text-sm">{selectedApp?.config.description}</p>
+      <Button onClick={handleOpenApp}>
+        <FontAwesomeIcon icon={faArrowUpFromBracket} className="pr-1" />
+        Open
+      </Button>
+
+      {(() => {
+        const appName = selectedApp.config.name || selectedApp.config.displayName;
+        const isPinned = !!taskbarItems[appName];
+
+        return (
+          <Button onClick={pin}>
+            <FontAwesomeIcon icon={faThumbTack} className="pr-1" />
+            {isPinned ? "Unpin" : "Pin"}
+          </Button>
+        );
+      })()}
+
+      <Button onClick={shortcut}>
+        <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="pr-1" />
+        Shortcut
+      </Button>
+
+      <Button onClick={deleteApp}>
+        <FontAwesomeIcon icon={faTrash} className="pr-1" />
+        Delete {selectedApp.config.name}
+      </Button>
+    </div>
+  </>
+)
+
             :
             <>
             {apps.map((app, index) => (
@@ -116,22 +189,22 @@ const Apps = () => {
                 className="flex flex-row justify-between items-center bg-primary rounded p-2 hover:bg-primary-light transition-colors duration-200 cursor-pointer"
                 >
                     <div className="flex justify-center items-center gap-4">
-                        {!app.svg ? undefined : typeof app.svg === "string" ? (
+                        {!app.config.icon ? undefined : typeof app.config.icon === "string" ? (
                             // Check if the string starts with "<svg" or "<img"
-                            app.svg.trim().startsWith("<svg") || app.svg.trim().startsWith("<img") ? (
+                            app.config.icon.trim().startsWith("<svg") || app.config.icon.trim().startsWith("<img") ? (
                             <div
                                 className="w-8 h-8 p-2 invert"
-                                dangerouslySetInnerHTML={{ __html: app.svg }}
+                                dangerouslySetInnerHTML={{ __html: app.config.icon }}
                             />
                             ) : (
                             // Otherwise, treat it as a regular image URL
-                            <img src={app.svg} alt={app.name} className="w-8 h-8 p-1 pointer-events-none" />
+                            <img src={app.config.icon} alt={app.config.name} className="w-8 h-8 p-1 pointer-events-none" />
                             )
                         ) : (
                             // If it's not a string, assume it's a FontAwesome svg object
-                            <FontAwesomeIcon icon={app.svg} />
+                            <FontAwesomeIcon icon={app.config.icon} />
                         )}
-                        <h3 className="font-semibold">{ app.name }</h3>
+                        <h3 className="font-semibold">{ app.config.name }</h3>
                     </div>
                     <FontAwesomeIcon icon={faChevronRight} />
                 </div>

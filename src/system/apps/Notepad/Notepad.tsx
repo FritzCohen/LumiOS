@@ -1,161 +1,206 @@
-import { faFile, faFileExport, faFolderOpen, faPlay } from "@fortawesome/free-solid-svg-icons";
+import {
+	faFile,
+	faFileExport,
+	faFolderOpen,
+	faPlay,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import virtualFS from "../../../utils/VirtualFS";
 import { useEffect, useRef, useState } from "react";
-import { Process } from "../../../utils/types";
-import { useKernal } from "../../../Providers/KernalProvider";
-import PopupContent from "../Code/PopupContent";
+import virtualFS from "../../api/virtualFS";
+import { useKernel } from "../../../hooks/useKernal";
+import { File } from "../../api/types";
+import { OpenedApp } from "../../../context/kernal/kernal";
+import FileBrowser from "../../gui/components/Popups/FileBrowser";
 
 interface NotepadProps {
-    app: Process;
-    refresh: () => Promise<void>;
+	defaultPath?: string;
+	defaultName?: string;
+	file?: File;
+	props: OpenedApp;
 }
 
-const Notepad: React.FC<NotepadProps> = ({ app, refresh }) => {
-    const { resetOptionalProperties, addPopup, optionalProperties } = useKernal();
-    const [directory, setDirectory] = useState<string>(optionalProperties.path || app?.path || ""); // @ts-expect-error This is easier then passing props.
-    const [selectedFile, setSelectedFile] = useState<string>(app ? (app.displayName ?? app.name) : "");
-    const [isStringified, setIsStringified] = useState<boolean>(false);
-    const [saveColor, setSaveColor] = useState<string>("");
-    const [runColor, setRunColor] = useState<string>("");
-    const [appUsed, setAppUsed] = useState<boolean>(false);
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const [reload, setReload] = useState<(() => void) | null>(null);
+const Notepad: React.FC<NotepadProps> = ({
+	defaultPath = "",
+	defaultName: n = "",
+	file: defaultFile,
+	props,
+}) => {
+	const [name, setName] = useState(n);
+	const [directory, setDirectory] = useState(defaultPath);
+	const [content, setContent] = useState<any>(null);
+	const [file, setFile] = useState<File | undefined>(defaultFile);
 
-    useEffect(() => {
-        setReload(() => optionalProperties.reload); // Store reload function
-        resetOptionalProperties();
-        fetchContent();
-        setAppUsed(true);
-    }, [directory, selectedFile]); // Runs when selected file or directory changes    
+	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-    const fetchContent = async () => {
-        try {
-            //const contentPath = `${directory}/${selectedFile}`;
-            let content = appUsed ? undefined : app.content;
+	const { openApp, modifyProp } = useKernel();
 
-            if (!content) {
-                const file = await virtualFS.readfile(directory, selectedFile);
-                content = await file.content;
-            }
+	useEffect(() => {
+		const loadFile = async () => {
+			if (!file && name === "" && directory === "") return;
 
-            if (content) {
-                const contentString = typeof content === "string" ? content : JSON.stringify(content);
-                setIsStringified(typeof content !== "string");
-                if (textareaRef.current) textareaRef.current.value = contentString;
-            } else {
-                if (textareaRef.current) textareaRef.current.value = "";
-            }
-        } catch (error) {
-            console.error("Failed to fetch content:", error);
-        }
-    };
+			if (!file || file.displayName || (file as any).id) {
+				const file = await virtualFS.readfile(directory, name);
+				setFile(file);
 
-    const handleSave = async () => {
-        try {
-            const content = textareaRef.current?.value || "";
-            const parsedContent = isStringified ? JSON.parse(content) : content;
-    
-            await virtualFS.updateFile(directory, selectedFile, parsedContent, app.type as string || "text");
-            
-            if (refresh) await refresh();
-            if (reload) await reload(); // Call stored reload function
-    
-            setSaveColor("green");
-            setTimeout(() => setSaveColor(""), 2000);
-        } catch (error) {
-            console.error("Failed to save file:", error);
-            setSaveColor("red");
-            setTimeout(() => setSaveColor(""), 2000);
-        }
-    };
+				let contentStr = "";
 
-    const handleOpenFolder = () => {
-        addPopup({
-            name: "FilePicker",
-            minimized: false,
-            onAccept: async () => {},
-            description: "",
-            children: (
-                <PopupContent
-                    setDirect={(newPath) => { // Follows format directory/filename
-                        const parts = newPath.split("/").filter(part => part !== "");
-                        const newFile = parts.pop() || ""; // Name is contained in last part
-                        const newDirectory = parts.join("/");
-                    
-                        setDirectory(newDirectory);
-                        setSelectedFile(newFile);
-                    }}
-                    direct={directory}
-                    index="FilePicker"
-                    type="file"
-                />
-            ),
-        });
-    };
+				switch (file.fileType) {
+					case "txt":
+					case "js":
+					case "css":
+					case "html":
+					case "shortcut":
+						contentStr = file.content as string;
+						break;
+					case "img":
+						// If Uint8Array, convert to base64 string
+						if (file.content instanceof Uint8Array) {
+							contentStr = btoa(
+								String.fromCharCode(...file.content)
+							);
+						} else {
+							contentStr = file.content;
+						}
+						break;
+					default:
+						contentStr = JSON.stringify(file.content, null, 2); // pretty JSON for objects like `exe`, `theme`, `sys`
+						break;
+				}
 
-    const handleRun = () => {
-        try {
-            const type: string = app.type as string;
+				setContent(contentStr);
 
-            const value = textareaRef.current && textareaRef.current.value;
-            
-            if (value && (type === "js" || type === "lumi")) {
-                eval(value);
+				return;
+			}
 
-                setRunColor("green");
+			setContent(JSON.stringify(file.content));
+		};
 
-                setTimeout(() => setRunColor(""), 2000);
-            } else {
-                setRunColor("red");
+		loadFile();
+	}, [file, directory, name]);
 
-                setTimeout(() => setRunColor(""), 2000);
-            }
-        } catch (e) {
-            console.error(e);
+	useEffect(() => {
+		if (!props?.id) return;
 
-            setRunColor("red");
+		const displayed =
+			name.length != 0 ? name : props.executable.config.name;
 
-            setTimeout(() => setRunColor(""), 2000);
-        }
-    };
+		modifyProp(props.id, "executable", {
+			...props.executable,
+			config: {
+				...props.executable.config,
+				displayName: displayed,
+			},
+		});
+	}, [name]);
 
-    return (
-        <div className="flex flex-row text-text-base h-full">
-            <div className="flex flex-col relative">
-                <button
-                    className="transition-colors duration-200 hover:bg-secondary p-2 rounded"
-                    onClick={handleOpenFolder}
-                >
-                    <FontAwesomeIcon icon={faFolderOpen} />
-                </button>
-                <button 
-                    className="transition-colors duration-200 hover:bg-secondary p-2 rounded"
-                    style={{ color: runColor }}
-                    onClick={handleRun}
-                >
-                    <FontAwesomeIcon icon={faPlay} />
-                </button>
-                <button
-                    className="transition-colors duration-200 hover:bg-secondary p-2 rounded"
-                    style={{ color: saveColor }}
-                    onClick={handleSave}
-                >
-                    <FontAwesomeIcon icon={faFile} />
-                </button>
-                <input id="file-input" type="file" style={{ display: "none" }} />
-                <button className="transition-colors duration-200 hover:bg-secondary p-2 rounded">
-                    <FontAwesomeIcon icon={faFileExport} />
-                </button>
-            </div>
-            <textarea
-                ref={textareaRef}
-                defaultValue={app ? app.content : ""}
-                className="flex-grow h-full w-full p-2"
-                style={{ background: "transparent" }}
-            />
-        </div>
-    );
+	const handleOpenFile = async () => {
+		openApp({
+			config: {
+				name: "Open File",
+				displayName: "Open File",
+				permissions: 0,
+				icon: "",
+			},
+			mainComponent: (props) => (
+				<FileBrowser
+					{...props}
+					typeFilter="file"
+					fileTypeFilter=""
+					direct={directory}
+					allowFileCreation={true}
+					allowFolderCreation={true}
+					showNameInput={true}
+					setDirect={setDirectory}
+					onComplete={(value, _, name) => {
+						setFile(value as File);
+						setName(name);
+					}}
+				/>
+			),
+		});
+	};
+
+	const handleSave = async () => {
+		if (!file) return;
+
+		let fixedContent = content;
+
+		try {
+			fixedContent = JSON.parse(content);
+		} catch {
+			fixedContent = content;
+		}
+
+		await virtualFS.updateFile(
+			directory,
+			name,
+			fixedContent,
+			file.fileType
+		);
+	};
+
+	const handleRun = async () => {};
+
+	const handleExport = () => {
+		const blob = new Blob([content], { type: "text/plain" });
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement("a");
+		link.href = url;
+		link.download = name || "file.txt";
+		link.click();
+		URL.revokeObjectURL(url);
+	};
+
+	return (
+		<div className="flex flex-row text-text-base h-full">
+			<div className="flex flex-col relative">
+				<button
+					className="transition-colors duration-200 hover:bg-secondary p-2 rounded"
+					onClick={handleOpenFile}
+				>
+					<FontAwesomeIcon icon={faFolderOpen} />
+				</button>
+				<button
+					className="transition-colors duration-200 hover:bg-secondary p-2 rounded"
+					onClick={handleRun}
+				>
+					<FontAwesomeIcon icon={faPlay} />
+				</button>
+				<button
+					className="transition-colors duration-200 hover:bg-secondary p-2 rounded"
+					onClick={handleSave}
+				>
+					<FontAwesomeIcon icon={faFile} />
+				</button>
+				<input
+					id="file-input"
+					type="file"
+					style={{ display: "none" }}
+				/>
+				<button
+					className="transition-colors duration-200 hover:bg-secondary p-2 rounded"
+					onClick={handleExport}
+				>
+					<FontAwesomeIcon icon={faFileExport} />
+				</button>
+			</div>
+			<textarea
+				ref={textareaRef}
+				value={
+					typeof content === "string"
+						? content
+						: content instanceof Uint8Array
+						? Array.from(content)
+								.map((b) => String.fromCharCode(b))
+								.join("")
+						: String(content)
+				}
+				onChange={(e) => setContent(e.target.value)}
+				className="flex-grow h-full w-full p-2"
+				style={{ background: "transparent", resize: "none" }}
+			/>
+		</div>
+	);
 };
 
 export default Notepad;

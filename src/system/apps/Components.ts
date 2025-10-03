@@ -1,41 +1,47 @@
-import AppCreator from "./AppCreator/AppCreator";
-import Appstore from "./Appstore/Appstore";
-import Browser from "./Browser/Browser";
-import Code from "./Code/Code";
-import ControlPanel from "./ControlPanel/ControlPanel";
-import Discord from "./Discord/Discord";
-import FileExplorer from "./FileExplorer/FileExplorer";
-import GetStarted from "./GetStarted/Getstarted";
-import InstalledApps from "./InstalledApps/InstalledApps";
-import Settings from "./Settings/Settings";
-import Taskmanager from "./Taskmanager/Taskmanager";
-import Terminal from "./Terminal/Terminal";
-import Webtools from "./Webtools/Webtools";
-import Info from "./Info/Info";
-import Pluginstore from "./Pluginstore/Pluginstore";
-import Notepad from "./Notepad/Notepad";
+import AppCreator from './Appcreater/Appcreater';
+import AppsList from './Apps List/AppsList';
+import Appstore from './Appstore/Appstore';
+import SWFPlayer from './Appstore/Menus/SWFPlayer';
+import Browser from './Browser/Browser';
+import Code from './Code/Code';
+import ControlPanel from './ControlPanel/ControlPanel';
+import Devtools from './Devtools/Devtools';
+import Discord from './Discord/Discord';
+import FileExplorer from './FileExplorer/FileExplorer';
+import HTMLViewer from './HTMLViewer/HTMLViewer';
+import Notepad from './Notepad/Notepad';
+import Settings from './Settings/Settings';
+import Shortcut from './Shortcut/Shortcut';
+import TaskManager from './TaskManager/Taskmanager';
+import Terminal from './Terminal/Terminal';
 
-// Define the types for your components
-type ComponentType = React.FC<any> | React.ComponentClass<any, any>;
+export type ComponentType = React.FC<any> | React.ComponentClass<any, any>;
 
-// Every app is from here
 export const components: { [key: string]: ComponentType } = {
-    "Settings": Settings,
-    "AppStore": Appstore,
-    "GetStarted": GetStarted,
-    "Browser": Browser,
-    "FileExplorer": FileExplorer,
-    "Discord": Discord,
-    "AppCreator": AppCreator,
-    "Terminal": Terminal,
-    "Webtools": Webtools,
-    "InstalledApps": InstalledApps,
-    "Code": Code,
-    "ControlPanel": ControlPanel,
-    "TaskManager": Taskmanager,
-    "Info": Info,
-    "Pluginstore": Pluginstore,
-    "Notepad": Notepad,
+  "Shortcuts": Shortcut,
+  "Settings": Settings,
+  "FileExplorer": FileExplorer,
+  "File Explorer": FileExplorer,
+  "Notepad": Notepad,
+  "Browser": Browser,
+  "Visual Code": Code,
+  "Code": Code,
+  "Appstore": Appstore,
+  "App Store": Appstore,
+  "AppStore": Appstore,
+  "AppCreator": AppCreator,
+  "App Creator": AppCreator,
+  "SWFPlayer": SWFPlayer,
+  "HTMLViewer": HTMLViewer,
+  "HTML Viewer": HTMLViewer,
+  "Web Tools": Devtools,
+  "Webtools": Devtools,
+  "Terminal": Terminal,
+  "Apps List": AppsList,
+  "AppsList": AppsList,
+  "ControlPanel": ControlPanel,
+  "Control Panel": ControlPanel,
+  "Discord": Discord,
+  "TaskManager": TaskManager,
+  "Task Manager": TaskManager,
 };
-
-export default components;

@@ -8,14 +8,14 @@
 }
 
 .sidebar-item:hover {
-    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
-    @apply bg-opacity-50; /* Add some transparency */
+    background: rgba(255, 255, 255, 0.2);
+    @apply bg-opacity-50;
 }
 
 /* Active state for sidebar items */
 .sidebar-item.active {
-    background: rgba(255, 255, 255, 0.3); /* Increase brightness on hover */
-    @apply bg-opacity-50; /* Add some transparency */
+    background: rgba(255, 255, 255, 0.3);
+    @apply bg-opacity-50;
 }
 
 .sidebar-item.active::before {
@@ -37,4 +37,49 @@
 .transition-max-height.open {
     max-height: 500px; /* Arbitrary value, you can adjust based on your content size */
     opacity: 1;
+}
+
+.accounts-item {
+    @apply flex justify-between items-center rounded p-1 transition-colors duration-200 cursor-pointer;
+}
+
+.accounts-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    @apply bg-opacity-50;
+}
+
+.accounts-item.active {
+    background: rgba(255, 255, 255, 0.3);
+    @apply bg-opacity-50;
+}
+
+.custom-progress-wrapper {
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  height: 24px;
+  position: relative;
+  transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.custom-progress-wrapper:hover {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.custom-progress-wrapper:focus-within {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.custom-progress-bar {
+  height: 100%;
+  background-color: rgba(0, 120, 255, 0.5);
+  transition: width 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
 }
