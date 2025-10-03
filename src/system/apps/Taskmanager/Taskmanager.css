@@ -1,0 +1,8 @@
+.taskmanager {
+    @apply w-full h-full flex flex-col gap-2 p-5
+}
+
+.taskmanager > .task-item {
+    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
+    @apply bg-opacity-50 flex justify-between items-center cursor-pointer p-2; /* Add some transparency */
+}

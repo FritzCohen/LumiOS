@@ -1,0 +1,31 @@
+.control-panel-grid {
+    @apply grid grid-cols-3 gap-5 w-full h-full p-5
+}
+
+.control-panel-grid > div {
+    @apply transition-all duration-200 hover:shadow rounded cursor-pointer p-2 flex flex-col gap-2 font-semibold justify-center items-center
+}
+
+.control-panel-grid > div:hover {
+    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
+    @apply bg-opacity-50; /* Add some transparency */
+}
+
+.control-panel-grid > div.active {
+    background: rgba(255, 255, 255, 0.3); /* Increase brightness on hover */
+    @apply bg-opacity-50; /* Add some transparency */
+}
+
+.config-icon {
+    aspect-ratio: 1;
+    @apply w-1/4
+}
+
+.script-column {
+    @apply p-4 flex flex-col overflow-y-auto gap-2 rounded
+}
+
+.script-column > div {
+    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
+    @apply bg-opacity-50 flex justify-between items-center cursor-pointer w-full h-full p-2; /* Add some transparency */
+}

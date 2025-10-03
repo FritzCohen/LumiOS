@@ -1,0 +1,86 @@
+.app-list {
+    --menu-border: var(--primary);
+    --menu-bg: linear-gradient(
+        45deg,
+        rgba(10, 20, 28, 0.2) 0%,
+        rgba(10, 20, 28, 0.7) 100%
+    );
+    --item-border: var(--primary-light);
+    --item-color: var(--text-base);
+    --item-bg-hover: rgba(255, 255, 255, 0.15); /* Simplified hover color for better visibility */
+    position: absolute;
+    width: 50%;
+    max-width: 45vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 8px;
+    z-index: 999; /* Ensure it's above other elements */
+    opacity: 0; /* Start as hidden */
+    transition: opacity 0.3s ease-in-out;
+    animation: slideIn 0.5s forwards; /* Animation applied here */
+    overflow: hidden;
+}
+
+.dark-highlight {
+    width: 100%;
+    padding: 10px;
+    border-top: 1px solid var(--bg4); /* Match your border color */
+    background: var(--menu-bg);
+}
+
+.app-tray {
+    position: absolute;
+    bottom: 80px; /* Adjust this if the app tray is too close to the taskbar */
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: saturate(2.5) blur(20px) brightness(49%);
+    backdrop-filter: saturate(2.5) blur(20px) brightness(49%);
+    z-index: 1000; /* Ensure it's above the taskbar */
+    transition: opacity 0.3s ease-in-out;
+    animation: slideIn 0.5s forwards; /* Animation applied here */
+    overflow: hidden;
+}
+
+.row-item {
+    @apply flex items-center p-2 rounded-lg transition duration-200 cursor-pointer w-full;
+    background-color: rgba(var(--tw-bg-primary), 0.8); /* Make primary bg more transparent */
+}
+
+.row-item:hover {
+    @apply bg-primary-light /* Hover with less transparency */
+}
+
+.app-tray-item {
+    @apply flex flex-row items-center justify-center gap-2
+}
+
+/* Define the keyframes for the slide-in effect */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(100%); /* Start off-screen */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* End at its normal position */
+    }
+}
+
+/* If you want the tray to disappear with an animation, you could add a similar animation for hiding */
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0); /* Start from its normal position */
+    }
+    to {
+        opacity: 0;
+        transform: translateY(100%); /* Move off-screen */
+    }
+}

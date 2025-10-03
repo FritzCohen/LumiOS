@@ -1,0 +1,40 @@
+.sidebar {
+    @apply flex flex-col gap-2 px-5 w-1/3 min-w-fit overflow-y-auto;/* Initial dark background */
+}
+
+.sidebar-item {
+    @apply flex items-center gap-2 w-full h-fit px-2 py-1 rounded transition-all duration-200; /* Rounded corners for items and smooth transition */
+    
+}
+
+.sidebar-item:hover {
+    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
+    @apply bg-opacity-50; /* Add some transparency */
+}
+
+/* Active state for sidebar items */
+.sidebar-item.active {
+    background: rgba(255, 255, 255, 0.3); /* Increase brightness on hover */
+    @apply bg-opacity-50; /* Add some transparency */
+}
+
+.sidebar-item.active::before {
+    content: "";
+    transform-origin: center;
+    animation: 200ms fadeInUp;
+    transition: all 0.4s ease;
+    @apply absolute left-0 h-1/2 w-1 bg-secondary-light rounded; /* Blue line for active state */
+}
+
+/* Custom classes for smooth transition */
+.transition-max-height {
+    transition: max-height 0.2s ease-out, opacity 0.2s ease-out;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.transition-max-height.open {
+    max-height: 500px; /* Arbitrary value, you can adjust based on your content size */
+    opacity: 1;
+}

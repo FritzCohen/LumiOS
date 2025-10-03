@@ -1,0 +1,35 @@
+.browser-bar {
+    background: rgba(255, 255, 255, 0.3); /* Increase brightness on hover */
+    @apply flex gap-1 w-full mb-2 px-2 py-1 rounded-t-sm;
+}
+
+.tab {
+    @apply flex items-center justify-between space-x-2 px-4 pr-1 py-1 pb-1 rounded-t transition-colors duration-200 m-1
+}
+
+.tab:hover {
+    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
+    @apply bg-opacity-50 rounded; /* Add some transparency */
+}
+
+/* Active state for sidebar items */
+.tab.active {
+    background: rgba(255, 255, 255, 0.3); /* Increase brightness on hover */
+    @apply bg-opacity-50 rounded-b-none !m-0; /* Add some transparency */
+}
+
+#content {
+    @apply w-full h-full
+}
+
+.close-button {
+    @apply rounded-full w-6 h-6 flex items-center justify-center transition-colors duration-200;
+}
+
+.close-button:hover {
+    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
+}
+
+.browser-item:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+}

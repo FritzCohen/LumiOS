@@ -1,0 +1,82 @@
+[
+  {
+    "pattern": "\\b(amazing|awesome)\\b.*(day|event|experience)\\b",
+    "templates": [
+      "Wow, it sounds like you had an amazing {context}! Tell me more!",
+      "An awesome {context} indeed! What was the highlight for you?"
+    ],
+    "weight": 9
+  },
+  {
+    "pattern": "\\b(sad|upset)\\b.*(day|moment|news)\\b",
+    "templates": [
+      "I'm here for you. Want to talk more about what made your {context} sad?",
+      "That's tough, I'm sorry to hear it was a difficult {context}. I'm here to listen if you need to share."
+    ],
+    "weight": 10
+  },
+  {
+    "pattern": "\\b(excited|thrilled)\\b.*(about|for)\\b.*\\b(\\w+)",
+    "templates": [
+      "It's great to hear you're excited about {context}! What's got you looking forward to it?",
+      "Being thrilled for {context} is always a good feeling! What's making it special for you?"
+    ],
+    "weight": 9
+  },
+  {
+    "pattern": "\\b(confused|lost)\\b.*(about|with)\\b.*\\b(\\w+)",
+    "templates": [
+      "It sounds like there's some confusion with {context}. How can I help clarify?",
+      "Feeling lost with {context} is normal! Let's break it down together."
+    ],
+    "weight": 8
+  },
+  {
+    "pattern": "\\b(good night)\\b",
+    "templates": [
+      "Good night! Rest well and take care!",
+      "Wishing you a peaceful night. Sleep tight!"
+    ],
+    "weight": 8
+  },
+  {
+    "pattern": "\\b(thank you so much)\\b",
+    "templates": [
+      "You're very welcome! It was my pleasure to help.",
+      "Happy to help! Don't hesitate to reach out again!"
+    ],
+    "weight": 9
+  },
+  {
+    "pattern": "\\b(love)\\b.*(this|that|it)\\b",
+    "templates": [
+      "I'm thrilled you love it! What’s your favorite part?",
+      "It’s great to hear you’re enjoying it! Let me know if there’s anything more I can do."
+    ],
+    "weight": 8
+  },
+  {
+    "pattern": "\\b(hello|hi|hey)\\b.*(there|again)\\b",
+    "templates": [
+      "Hey again! How’s everything going?",
+      "Hello there! What brings you back today?"
+    ],
+    "weight": 7
+  },
+  {
+    "pattern": "\\b(sorry)\\b",
+    "templates": [
+      "No need to apologize! How can I help?",
+      "All good! What can I do for you?"
+    ],
+    "weight": 6
+  },
+  {
+    "pattern": "\\b(wonderful)\\b.*(experience|day)\\b",
+    "templates": [
+      "That's wonderful to hear! What made your {context} so great?",
+      "A wonderful {context} indeed! What was the highlight for you?"
+    ],
+    "weight": 8
+  }
+]

@@ -1,0 +1,84 @@
+.appstore-item {
+    @apply w-full flex items-center hover:shadow transition-all duration-200 rounded px-4 py-2 cursor-pointer relative
+}
+
+.appstore-item > h3 {
+    @apply pl-2
+}
+
+.appstore-item > svg {
+    @apply w-6 h-6
+}
+
+.appstore-item:hover {
+    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
+    @apply bg-opacity-50; /* Add some transparency */
+}
+
+/* Active state for appstore items */
+.appstore-item.active {
+    background: rgba(255, 255, 255, 0.3); /* Increase brightness on hover */
+    @apply bg-opacity-50; /* Add some transparency */
+}
+
+.appstore-item.active::before {
+    content: "";
+    transform-origin: center;
+    animation: 200ms fadeInUp;
+    transition: all 0.4s ease;
+    @apply absolute left-0 h-1/2 w-1 bg-secondary-light rounded; /* Blue line for active state */
+}
+
+.flex-game {
+  @apply flex flex-row gap-4 overflow-x-auto p-5;
+}
+
+.flex-game::-webkit-scrollbar {
+  display: none;
+}
+
+/* Container */
+.container-game {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 1rem;
+  max-width: 100%;
+  padding: 5px;
+  overflow: hidden;
+  overflow-x: hidden;
+}
+
+/* Card */
+.card {
+  color: white;
+  @apply h-[225px] w-full p-2 overflow-hidden relative rounded-sm shadow transition duration-300 hover:shadow-2xl hover:scale-105 hover:visible hover:backdrop-blur;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Card Image */
+.card img {
+  @apply absolute top-0 left-0 w-full h-full object-cover transition duration-300 hover:-translate-y-10;
+}
+
+/* Card Description Layer */
+.img__description_layer {
+  @apply absolute inset-0 opacity-0 transition-opacity p-2 hover:opacity-100 hover:backdrop-blur hover:backdrop-brightness-75;
+}
+
+/* Card Description */
+.img__description {
+  @apply transition duration-200 translate-y-4;
+}
+
+/* Hover Effect for Description */
+.card:hover .img__description {
+  @apply translate-y-0;
+}
+
+.button-container {
+  padding: 12px;
+  @apply grid grid-cols-2 gap-2 
+}

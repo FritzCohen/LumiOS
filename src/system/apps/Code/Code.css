@@ -1,0 +1,18 @@
+.code-sidebar {
+    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
+    @apply bg-opacity-50; /* Add some transparency */
+}
+
+.popup-item {
+    @apply flex items-center gap-2 p-2 cursor-pointer transition-colors duration-200 rounded
+}
+
+.popup-item:hover {
+    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
+    @apply bg-opacity-50; /* Add some transparency */
+}
+
+.popup-item.active {
+    background: rgba(255, 255, 255, 0.3); /* Increase brightness on hover */
+    @apply bg-opacity-50; /* Add some transparency */
+}

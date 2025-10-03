@@ -1,0 +1,65 @@
+.file-explorer-sidebar {
+
+}
+
+.file-explorer-bar {
+    @apply flex flex-row w-full justify-between items-center gap-1 rounded;
+}
+
+.file-explorer-bar > div {
+    background: rgba(255, 255, 255, 0.2);
+    @apply rounded p-1
+}
+
+.content-item {
+    @apply flex flex-row justify-between items-center w-full rounded p-2 transition-colors duration-200 cursor-pointer
+}
+
+.content-item:hover {
+    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
+    @apply bg-opacity-50; /* Add some transparency */
+}
+
+.content-item.active {
+    background: rgba(255, 255, 255, 0.3); /* Increase brightness on hover */
+    @apply bg-opacity-50; /* Add some transparency */
+}
+
+.icon {
+    max-width: 100%;
+    max-height: 1rem; /* Match FontAwesome icon size */
+    object-fit: contain;
+}
+
+.file-button {
+    @apply flex flex-col gap-1 items-center justify-center p-1 text-xs rounded transition-colors duration-100 aspect-square
+}
+
+.file-button:hover {
+    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
+}
+
+.file-button-active {
+    background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */ 
+}
+
+.file-list-item {
+    @apply my-1
+}
+
+.file-list-item {
+    @apply w-full flex flex-row items-center rounded p-1 px-2 cursor-pointer font-bold 
+        hover:shadow transition-all duration-200;
+}
+
+.file-list-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.file-list-item-active {
+    background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.file-list-icon {
+    @apply cursor-pointer pr-1;
+}  

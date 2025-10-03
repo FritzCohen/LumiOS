@@ -1,0 +1,269 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+:root {
+    --taskbar: floating;
+    --taskbar-align: center;
+}
+
+html, body {
+    overflow: hidden;
+}
+
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    @apply !text-text-base
+}
+
+.desktop {
+    position: relative;
+    background: no-repeat;
+    background-image: var(--background-image, none);
+    background-size: cover;
+    @apply w-full h-full flex justify-center items-center;
+}
+
+.desktop-blur {
+    position: relative;
+    background: no-repeat;
+    background-image: var(--background-image, none);
+    background-size: cover;
+    background-position: center;
+    width: 100vw;
+    height: 110vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Prevent overflow issues */
+}
+
+.desktop-blur::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit; /* Inherit the background image */
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+    filter: blur(10px); /* Adjust the blur intensity */
+    -webkit-filter: blur(10px); /* For Safari */
+    width: 100%;
+    height: 100%;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+}
+
+#root > div {
+    width: 100%;
+    height: 100%;
+}
+
+.glass {
+    -webkit-backdrop-filter: saturate(2) blur(3em) brightness(69%);
+    backdrop-filter: saturate(2) blur(3em) brightness(69%);
+}
+
+@layer components {
+    .input-main {
+      @apply h-10 min-h-8 w-full bg-primary border-b-2 border-secondary text-text-base rounded-lg text-sm px-4 focus:ring-0;
+    }
+
+    .select-main {
+      @apply h-10 w-full bg-primary border-b-2 border-secondary text-text-base rounded-lg text-sm px-4 focus:ring-0;
+    }
+  }
+
+  @layer utilities {
+    .focus-glow {
+      @apply focus-visible:ring focus-visible:ring-secondary-light focus-visible:ring-opacity-50;
+    }
+}
+
+.ripple-button {
+    @apply relative cursor-pointer overflow-hidden px-2 py-1 text-text-base bg-primary hover:bg-secondary-light transition-all duration-200 active:scale-95 rounded
+}
+  
+.ripple-button > .ripple {
+    animation: 0.9s ease 1 forwards ripple-effect;
+    content: "";
+    @apply absolute block w-10 h-10 bg-secondary rounded-full opacity-100
+}
+  
+@keyframes ripple-effect {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(10);
+      opacity: 0.375;
+    }
+    100% {
+      transform: scale(35);
+      opacity: 0;
+    }
+}
+  
+.ripple-button > .content {
+    position: relative;
+    z-index: 2;
+}
+
+@keyframes fadeInUp {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+}
+
+.fade-in {
+  transform-origin: center;
+  animation: 1.5s fadeInUp;
+  transition: all 0.4s ease;
+}
+
+::-webkit-scrollbar{height:1rem;width:.5rem}::-webkit-scrollbar:horizontal{height:.5rem;width:1rem}::-webkit-scrollbar-track{background-color:transparent;border-radius:9999px}::-webkit-scrollbar-thumb{--tw-border-opacity:1;background-color:hsla(0,0%,89%,.8);border-color:rgba(255,255,255,var(--tw-border-opacity));border-radius:9999px;border-width:1px}::-webkit-scrollbar-thumb:hover{--bg-primary:1;background-color:rgba(227,227,227,var(--bg-primary))}.dark ::-webkit-scrollbar-thumb{background-color:hsla(0,0%,100%,.1)}.dark ::-webkit-scrollbar-thumb:hover{background-color:hsla(0,0%,100%,.3)}@media (min-width:768px){.scrollbar-trigger ::-webkit-scrollbar-thumb{visibility:hidden}.scrollbar-trigger:hover ::-webkit-scrollbar-thumb{visibility:visible}}
+
+.custom-file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.desktop-apps {
+  @apply flex flex-col flex-wrap gap-4 p-4 w-full h-full mt-12 relative;
+}
+
+.desktop-frame {
+  @apply w-full h-full
+}
+
+.desktop-item {
+  margin: 4px;
+  height: 84px;
+  width: 74px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8em;
+  transition: all 200ms ease-in-out;
+  animation: 200ms popintro;
+  justify-content: center;
+  border: 1px solid transparent;
+  cursor: pointer;
+  position: relative;
+}
+
+.desktop-item:focus {
+  background: rgba(255, 255, 255, 0.24);
+  border: 1px dotted white;
+}
+
+.desktop-item:hover {
+  background: rgba(255, 255, 255, 0.2); /* Increase brightness on hover */
+  @apply bg-opacity-50 rounded-sm; /* Add some transparency */
+}
+
+.desktop-item .appName {
+  text-align: center;
+  color: #fafafa;
+  margin-top: 4px;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+}
+
+.desktop-item:active {
+  border: 1px dotted gray;
+}
+
+.svg-wrapper {
+  height: 45%;
+  padding: 2px;
+  @apply aspect-square pointer-events-none
+}
+
+.svg-wrapper > svg {
+  color: white;
+  @apply invert;
+}
+
+.desktop-item:active > img, .desktop-item:active > div, .desktop-item:active > svg {
+  @apply transition-transform duration-200 scale-75
+}
+
+textarea:focus {
+  outline: none;
+}
+
+@keyframes popintro {
+  0% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1.125);
+  }
+  70% {
+    transform: scale(0.725);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+select {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+select:hover {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+select:focus {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.window-content {
+  @apply bg-primary
+}
+
+.loading-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #181818;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease-in-out;
+  z-index: 100;
+}
+
+.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
