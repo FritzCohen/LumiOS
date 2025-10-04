@@ -40,7 +40,7 @@ It offers a dynamic desktop experience with offline functionality, themes, plugi
 
 ## Downloading
 
-Lumi OS can be run locally, so click on this [link](https://raw.githubusercontent.com/LuminesenceProject/LumiOS/main/old/LumiOS.v12.5.html) in order to download the file. It can also be downloaded as an about:blank page.
+Lumi OS can be run locally, so click on this [link](https://raw.githubusercontent.com/LuminesenceProject/LumiOS/main/old/LumiOS.v14.html) in order to download the file. It can also be downloaded as an about:blank page.
 - Can I run Lumi OS off of my chromebook?
 	> Yes, Lumi OS can be run from local files.
 - How do I know when to update my file?
