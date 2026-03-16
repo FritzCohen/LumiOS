@@ -1,0 +1,134 @@
+/* ────────────── Main App List Menu ────────────── */
+.app-list {
+  --menu-border: var(--primary);
+  --menu-bg: linear-gradient(
+    45deg,
+    rgba(10, 20, 28, 0.2) 0%,
+    rgba(10, 20, 28, 0.7) 100%
+  );
+  --item-border: var(--primary-light);
+  --item-color: var(--text-base);
+  --item-bg-hover: rgba(255, 255, 255, 0.15);
+
+  position: absolute;
+  width: 50%;
+  max-width: 45vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 8px;
+  z-index: 60;
+  opacity: 0; /* start hidden */
+  overflow: hidden;
+
+  transition: opacity 0.3s ease-in-out;
+  animation: slideIn 0.5s forwards;
+}
+
+/* ────────────── Bottom Bar in App List ────────────── */
+.dark-highlight {
+  width: 100%;
+  padding: 10px;
+  background: var(--menu-bg);
+}
+
+/* ────────────── App Tray Popout ────────────── */
+.app-tray {
+  position: absolute;
+  bottom: 80px;
+  z-index: 60;
+  width: 250px;
+  border-radius: 8px;
+  overflow: hidden;
+
+  transition: opacity 0.3s ease-in-out;
+  animation: slideIn 0.5s forwards;
+}
+
+.app-tray::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  backdrop-filter: saturate(2.5) blur(20px) brightness(49%);
+  -webkit-backdrop-filter: saturate(2.5) blur(20px) brightness(49%);
+  background-color: rgba(15, 15, 15, 0.4);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ────────────── Menu Items ────────────── */
+.menu-item {
+  @apply flex items-center gap-2 w-full h-fit p-1 rounded transition-all duration-200;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  @apply bg-opacity-50;
+}
+
+.menu-item.active {
+  background: rgba(255, 255, 255, 0.3);
+  @apply bg-opacity-50;
+}
+
+.menu-item-row {
+  @apply !flex-row;
+}
+
+/* ────────────── Animations ────────────── */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+@keyframes slideFade {
+  from {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-fade {
+  animation: slideFade 0.2s ease-out forwards;
+}
+
+/* ────────────── Power Menu (Floating Menu on Top) ────────────── */
+.content {
+  position: relative;
+}
+
+/* The actual menu is above the overlay */
+.power-menu {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-2%, -0%);
+  z-index: 61;
+  backdrop-filter: blur(10px);
+  padding: 1rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}

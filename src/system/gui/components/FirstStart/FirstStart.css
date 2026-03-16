@@ -1,0 +1,46 @@
+.start-box {
+    width: 65%;
+    height: 70%;
+    transform: translateY(-5vh);
+    padding: 12px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+}
+
+.start-box > div, .start-box > img, .start-box > svg {
+    transform-origin: center;
+    animation: 1.5s fadeInUp;
+    transition: all 0.4s ease;
+}
+
+.start-box > h1, .start-h1 {
+    @apply text-text-base font-bold text-3xl
+}
+
+.start-box > svg, .start-box > img {
+    @apply align-middle justify-center items-center aspect-square mx-auto
+}
+
+@keyframes popintro {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    40% {
+      transform: scale(1.025);
+      opacity: 0.4;
+    }
+    70% {
+      transform: scale(0.925);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+}
+
+.start-button {
+    @apply p-2 rounded-sm bg-secondary hover:bg-secondary-light transition-colors duration-200 shadow
+}

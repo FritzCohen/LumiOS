@@ -1,0 +1,18 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Button from "../../../lib/Button";
+import { useAppstoreProps } from "../appstoreTypes";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+
+const Themes: React.FC<{ store: useAppstoreProps }> = ({ store }) => {
+    return ( 
+        <div className="flex flex-col p-5">
+            <div className="flex flex-row justify-between">
+                <Button onClick={() => store.goHome()}><FontAwesomeIcon icon={faChevronLeft} /> Back</Button>
+                <h3 className="font-bold text-2xl">Themes</h3>
+            </div>
+            <p>Stuffs</p>
+        </div>
+    );
+}
+ 
+export default Themes;

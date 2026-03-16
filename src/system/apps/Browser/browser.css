@@ -1,0 +1,40 @@
+.browser-bar {
+    background: rgba(255, 255, 255, 0.3);
+    @apply flex items-center gap-2 px-2;
+}
+
+
+
+.tab {
+  @apply flex items-center justify-between space-x-2 px-4 pr-1 py-1 rounded-t transition-colors duration-200 cursor-pointer;
+  margin-bottom: 2px;
+}
+
+.tab:hover {
+  background: rgba(255, 255, 255, 0.2);
+  @apply bg-opacity-50 rounded;
+}
+
+.tab.active {
+  background: rgba(255, 255, 255, 0.3);
+  @apply bg-opacity-50 pb-[6px];
+  margin-bottom: 0px;
+  position: relative;
+  z-index: 10;
+}
+
+#content {
+    @apply w-full h-full
+}
+
+.close-button {
+    @apply rounded-full w-6 h-6 flex items-center justify-center transition-colors duration-200;
+}
+
+.close-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.browser-item:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+}

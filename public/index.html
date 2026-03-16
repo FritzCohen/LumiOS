@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test App</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    button { padding: 8px 12px; margin-top: 12px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>HTML Test App</h1>
+  <p id="log"></p>
+  <button id="testBtn">Run API Action</button>
+
+  <script>
+    // ---- Log the props on load ----
+  document.addEventListener("propsUpdated", e => {
+    const { item, defaultPath, defaultName } = e.detail;
+    console.log("Props received:", { item, defaultPath, defaultName });
+    document.getElementById("log").textContent =
+      `item: ${item}, defaultPath: ${defaultPath}, defaultName: ${defaultName}`;
+  });
+  
+    // ---- Button click executes a parent API call ----
+    const btn = document.getElementById('testBtn');
+    btn.addEventListener('click', () => {
+      if (window.API && window.API.win && typeof window.API.win.setMenu === 'function') {
+        window.API.win.setMenu("Chatbot");
+        console.log('Executed API.win.setMenu("Chatbot")');
+      } else {
+        console.warn('window.API.win.setMenu not available');
+      }
+    });
+  </script>
+</body>
+</html>

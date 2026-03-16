@@ -1,5 +1,2 @@
-dist
-
-docs
-
-.DS_STORE
+node_modules
+.gitignore

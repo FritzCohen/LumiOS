@@ -1,0 +1,105 @@
+.custom-bg {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+}
+
+.bg-glass {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.fade-in {
+  animation: fadein 0.5s ease;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-item {
+  background: rgba(255, 255, 255, 0.2);
+  width: 100px;
+  height: 100px;
+  @apply bg-opacity-50 border transition-colors duration-200;
+}
+
+.user-item:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+
+/* LOADING CRAP fuck ts */
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background-color: rgba(20, 20, 20, 0.35);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  color: white;
+  z-index: 9999;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
+}
+
+.loading-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.loading-description {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.loading-progress {
+  width: 300px;
+  height: 14px;
+  border-radius: 999px;
+  overflow: hidden;
+  appearance: none;
+}
+
+.loading-progress::-webkit-progress-bar {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+}
+
+.loading-progress::-webkit-progress-value {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.8),
+    rgba(200, 200, 200, 0.8)
+  );
+  border-radius: 999px;
+  transition: width 0.3s ease-in-out;
+}
+
+.loading-progress::-moz-progress-bar {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.8),
+    rgba(200, 200, 200, 0.8)
+  );
+  border-radius: 999px;
+  transition: width 0.3s ease-in-out;
+}
+
+.loading-error {
+  color: #ff5f57; /* macOS close button red */
+  font-size: 0.9rem;
+  margin-top: 8px;
+}

@@ -1,0 +1,161 @@
+[
+  {
+    "name": "delete_file",
+    "prompts": [
+      { "key": "name", "message": "What is the name of the file you want to delete?" },
+      { "key": "path", "message": "Where is the file located?" }
+    ],
+    "needsConfirmation": true,
+    "defaultResponses": ["Do you really want to delete \"{name}\" at \"{path}\"?"],
+    "errorMessage": "I couldn't delete the file because I didn't get the name or path."
+  },
+  {
+    "name": "write_file",
+    "prompts": [
+      { "key": "name", "message": "What should I name the file?" },
+      { "key": "path", "message": "Where should I save it?" }
+    ],
+    "needsConfirmation": true,
+    "defaultResponses": ["Should I save \"{name}\" to \"{path}\"?"],
+    "errorMessage": "I need both a file name and a location to save."
+  },
+  {
+    "name": "write_directory",
+    "prompts": [
+      { "key": "name", "message": "What should I name the folder?" },
+      { "key": "path", "message": "Where should I save it?" },
+      { "key": "permissions", "message": "What level access should it have?"}
+    ],
+    "needsConfirmation": true,
+    "defaultResponses": ["Should I save \"{name}\" to \"{path}\"?"],
+    "errorMessage": "I need both a folder name and a location to save."
+  },
+  {
+    "name": "open_browser",
+    "prompts": [
+      { "key": "path", "message": "What URL should I open?" }
+    ],
+    "needsConfirmation": false,
+    "defaultResponses": ["Opening the browser to {path}"],
+    "errorMessage": "I need a URL or path to open the browser."
+  },
+  {
+    "name": "open_calculator",
+    "prompts": [],
+    "needsConfirmation": false,
+    "defaultResponses": [
+      "Launching calculator.",
+      "Opening calculator.",
+      "Calculator is ready."
+    ],
+    "errorMessage": ""
+  },
+  {
+    "name": "open_notepad",
+    "prompts": [],
+    "needsConfirmation": false,
+    "defaultResponses": [
+      "Opening notepad.",
+      "Launching notepad.",
+      "Ready to take notes."
+    ],
+    "errorMessage": ""
+  },
+  {
+    "name": "open_fileexplorer",
+    "prompts": [],
+    "needsConfirmation": false,
+    "defaultResponses": [
+      "Opening file explorer.",
+      "Launching file system.",
+      "Here's your file manager."
+    ],
+    "errorMessage": ""
+  },
+  {
+    "name": "open_terminal",
+    "prompts": [],
+    "needsConfirmation": false,
+    "defaultResponses": [
+      "Launching terminal.",
+      "Opening command line.",
+      "Terminal is ready."
+    ],
+    "errorMessage": ""
+  },
+  {
+    "name": "open_discord",
+    "prompts": [],
+    "needsConfirmation": false,
+    "defaultResponses": [
+      "Starting Discord.",
+      "Opening Discord chat.",
+      "Discord coming up."
+    ],
+    "errorMessage": ""
+  },
+  {
+    "name": "open_code",
+    "prompts": [],
+    "needsConfirmation": false,
+    "defaultResponses": [
+      "Launching code editor.",
+      "Opening the IDE.",
+      "Your coding space is ready."
+    ],
+    "errorMessage": ""
+  },
+  {
+    "name": "get_information",
+    "prompts": [],
+    "needsConfirmation": false,
+    "defaultResponses": [
+      "I am a roboot."
+    ],
+    "errorMessage": ""
+  },
+  {
+    "name": "set_theme",
+    "prompts": [
+      { "key": "name", "message": "What should the theme be?" }
+    ],
+    "needsConfirmation": false,
+    "defaultResponses": [
+      "Changed the theme successfully!",
+      "Updated the themes!"
+    ],
+    "errorMessage": "The theme could not be set."
+  },
+  {
+    "name": "greeting",
+    "prompts": [],
+    "needsConfirmation": false,
+    "defaultResponses": [
+      "Wassup {username}!",
+      "Hello, its great to talk to you, {username}.",
+      "Welcome to LumiOS, I hope you have a fun time navigating around!",
+      "Don't be afraid to explore LumiOS!"
+    ],
+    "errorMessage": ""
+  },
+  {
+    "name": "get_update_information",
+    "prompts": [],
+    "needsConfirmation": false,
+    "defaultResponses": [
+      "In the latest update, the Chatbot was updated to have increased recognition.",
+      "LumiOS was just released to become open-source, for the first time ever!"
+    ],
+    "errorMessage": ""
+  },
+  {
+    "name": "get_os_information",
+    "prompts": [],
+    "needsConfirmation": false,
+    "defaultResponses": [
+      "Not much is new, but you are running LumiOS v13.",
+      "LumiOS is built off of React, a type of webframework that enables this OS to do the things it can."
+    ],
+    "errorMessage": ""
+  }
+]

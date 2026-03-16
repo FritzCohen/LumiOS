@@ -1,0 +1,68 @@
+.control-panel-grid {
+    @apply grid grid-cols-3 gap-5 w-full h-full p-5
+}
+
+.control-panel-grid > div {
+    @apply flex flex-col gap-2 justify-center items-center rounded p-1 transition-all bg-surface hover:bg-surfaceAlt border border-border-subtle shadow hover:shadow-md duration-200 cursor-pointer;
+}
+
+.control-panel-grid > div:hover {
+    background: rgba(255, 255, 255, 0.2);
+    @apply bg-opacity-50;
+}
+
+.control-panel-grid > div.active {
+    background: rgba(255, 255, 255, 0.3);
+    @apply bg-opacity-50;
+}
+
+.config-icon {
+    aspect-ratio: 1;
+    @apply w-1/4
+}
+
+.script-column {
+    @apply p-4 flex flex-col overflow-y-auto gap-2 rounded
+}
+
+.script-column > div {
+    background: rgba(255, 255, 255, 0.2);
+    @apply bg-opacity-50 flex justify-between items-center cursor-pointer w-full h-full p-2;
+}
+
+.editor-shell {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.editor-textarea,
+.editor-textarea:hover,
+.editor-textarea:focus,
+.editor-textarea:focus-visible {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent !important;
+}
+
+.editor-textarea {
+  padding-left: 5ch !important; /* This is to line up with the comments and indexing */
+  box-sizing: border-box;
+}
+
+.editor-shell:focus-within {
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+.editor-block {
+  font-family: monospace;
+  font-size: 1rem;
+  padding: 6px 10px;
+  white-space: pre-wrap;
+  line-height: 1.4;
+}

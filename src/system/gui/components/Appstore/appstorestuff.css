@@ -1,0 +1,40 @@
+/* Make sure the root is the containing block */
+.splide {
+  position: relative;
+}
+
+/* Ripple-button look BUT ABSOLUTE positioning */
+.splide__arrow {
+  position: absolute;               /* critical */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out, transform 0.1s ease-in-out;
+  overflow: hidden; /* for ripple if you add it later */
+}
+
+.splide__arrow:hover  { border: 1px solid rgba(255, 255, 255, 0.5); }
+.splide__arrow:focus  { box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
+.splide__arrow:active { transform: translateY(-50%) scale(0.97); }
+
+/* Pin to edges */
+.splide__arrow--prev { left: 0.5rem; }
+.splide__arrow--next { right: 0.5rem; }
+
+/* Optional: push slightly outside the carousel */
+.splide.has-outside-arrows .splide__arrow--prev { left: -1rem; }
+.splide.has-outside-arrows .splide__arrow--next { right: -1rem; }
+
+/* If Splide's default SVG looks odd with your style, you can tweak/hide it */
+.splide__arrow svg { width: 1rem; height: 1rem; filter: invert(100%); }

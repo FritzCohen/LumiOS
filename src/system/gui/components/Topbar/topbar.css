@@ -1,0 +1,71 @@
+/* Topbar wrapper */
+#topbar {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 0 0.75rem;
+  height: 1.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  -webkit-user-select: none;
+  user-select: none;
+
+  left: 0;
+  right: 0;
+  z-index: 10;
+  color: #fff;
+}
+
+/* Glass background */
+#topbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  /* Keep your blur stack, just tweak contrast */
+  background-color: rgba(20, 20, 20, 0.25);
+  backdrop-filter: blur(3em) saturate(180%) brightness(60%);
+  -webkit-backdrop-filter: blur(3em) saturate(180%) brightness(60%);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.25);
+  isolation: isolate;
+}
+
+/* Dropdown glass layer */
+.dropdown-glass {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(20, 20, 20, 0.25);
+  backdrop-filter: blur(3em) saturate(180%) brightness(60%);
+  -webkit-backdrop-filter: blur(3em) saturate(180%) brightness(60%);
+  z-index: -10;
+  border-radius: 0.5rem;
+  border: 0.5px solid rgba(255, 255, 255, 0.2);
+  padding: 2px;
+}
+
+.dropdown-item {
+  @apply px-4 py-2 cursor-pointer flex items-center gap-2 transition-colors m-1 rounded-md;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.20);
+  @apply bg-opacity-50;
+}
+
+.topbar-icon {
+  display: inline-block;
+  width: 1em;   /* base size stays compact */
+  height: 1em;
+  fill: currentColor;
+  color: white;
+  vertical-align: middle;
+
+  font-size: 1rem; /* make the base glyph unit slightly bigger */
+  transform: scale(1.6); /* scale up more for visual weight */
+  transform-origin: center;
+}

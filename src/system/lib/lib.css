@@ -1,0 +1,265 @@
+.ripple-button {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out, transform 0.1s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ripple-button:hover {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.ripple-button:focus {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.ripple-button:active {
+  transform: scale(0.97);
+}
+
+.ripple-button.active {
+  background: rgba(255, 255, 255, 0.3);
+  @apply bg-opacity-50;
+}
+
+.input-like-select {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 1rem;
+  outline: none;
+  width: 100%;
+  transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.input-like-select:hover {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.input-like-select:focus {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.input-like-select::placeholder {
+  color: #cecece;
+}
+
+
+.datepicker-popup {
+  position: fixed; /* fixed so it floats above everything */
+  top: 30%;        /* adjust to align where you want */
+  left: 100%;
+  z-index: 9999;   /* very high so it overlays everything */
+  background-color: rgba(30, 30, 30, 0.95);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  padding: 8px;
+  width: 270px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  font-family: "Segoe UI", sans-serif;
+  overflow: hidden; /* ensures inner content doesn’t spill */
+}
+
+.datepicker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  color: white;
+}
+
+.datepicker-header .month-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.day {
+  background: transparent;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  font-size: 0.85rem;
+}
+
+.day:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.day.selected {
+  background: white;
+  color: black;
+  font-weight: 600;
+}
+
+.day.today {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.day.blank {
+  pointer-events: none;
+  opacity: 0.2;
+}
+
+/* TIME PICKER */
+.time-picker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+
+
+.time-input:focus {
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+}
+
+.time-sep {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.time-picker.two-rows {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.time-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.time-input {
+  width: 42px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 3px 5px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.time-sep {
+  color: #fff;
+  font-weight: bold;
+}
+
+.ampm-select {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 0.9rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.ampm-select:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.today-btn {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.today-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.time-input {
+  width: 62px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 3px 5px;
+  outline: none;
+
+}
+
+.time-sep {
+  color: #fff;
+  font-weight: bold;
+  margin: 0 2px;
+}
+
+.ampm-select {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 0.9rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.ampm-select:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+}
